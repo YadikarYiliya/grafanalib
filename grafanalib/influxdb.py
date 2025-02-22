@@ -1,12 +1,11 @@
 """Helpers to create InfluxDB-specific Grafana queries."""
 
-import attr
+from pydantic import BaseModel
 
 TIME_SERIES_TARGET_FORMAT = 'time_series'
 
 
-@attr.s
-class InfluxDBTarget(object):
+class InfluxDBTarget(BaseModel):
     """
     Generates InfluxDB target JSON structure.
 
@@ -23,16 +22,15 @@ class InfluxDBTarget(object):
     :param rawQuery: target reference id
     :param refId: target reference id
     """
+    alias: str = ""
+    format: str = TIME_SERIES_TARGET_FORMAT
+    datasource: str = ""
+    measurement: str = ""
+    query: str = ""
+    rawQuery: bool = True
+    refId: str = ""
 
-    alias = attr.ib(default="")
-    format = attr.ib(default=TIME_SERIES_TARGET_FORMAT)
-    datasource = attr.ib(default="")
-    measurement = attr.ib(default="")
-    query = attr.ib(default="")
-    rawQuery = attr.ib(default=True)
-    refId = attr.ib(default="")
-
-    def to_json_data(self):
+    def to_json_data(self) -> dict:
         return {
             'query': self.query,
             'resultFormat': self.format,

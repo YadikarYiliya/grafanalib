@@ -1,8 +1,7 @@
 """Support for OpenTSDB."""
 
-import attr
-from attr.validators import instance_of
-from grafanalib.validators import is_in
+from typing import Any, List, Optional
+from pydantic import BaseModel, Field, validator
 
 # OpenTSDB aggregators
 OTSDB_AGG_AVG = 'avg'
@@ -45,17 +44,19 @@ OTSDB_QUERY_FILTERS = (
 OTSDB_QUERY_FILTER_DEFAULT = 'literal_or'
 
 
-@attr.s
-class OpenTSDBFilter(object):
+class OpenTSDBFilter(BaseModel):
+    value: Any
+    tag: Any
+    type: str = Field(default=OTSDB_QUERY_FILTER_DEFAULT)
+    groupBy: bool = False
 
-    value = attr.ib()
-    tag = attr.ib()
-    type = attr.ib(
-        default=OTSDB_QUERY_FILTER_DEFAULT,
-        validator=is_in(OTSDB_QUERY_FILTERS))
-    groupBy = attr.ib(default=False, validator=instance_of(bool))
+    @validator('type')
+    def validate_type(cls, v):
+        if v not in OTSDB_QUERY_FILTERS:
+            raise ValueError(f"type must be one of {OTSDB_QUERY_FILTERS}")
+        return v
 
-    def to_json_data(self):
+    def to_json_data(self) -> dict:
         return {
             'filter': self.value,
             'tagk': self.tag,
@@ -64,68 +65,59 @@ class OpenTSDBFilter(object):
         }
 
 
-@attr.s
-class OpenTSDBTarget(object):
-    """Generates OpenTSDB target JSON structure.
+class OpenTSDBTarget(BaseModel):
+    """
+    Generates OpenTSDB target JSON structure.
 
     Grafana docs on using OpenTSDB:
     http://docs.grafana.org/features/datasources/opentsdb/
     OpenTSDB docs on querying or reading data:
     http://opentsdb.net/docs/build/html/user_guide/query/index.html
 
-
     :param metric: OpenTSDB metric name
     :param refId: target reference id
     :param aggregator: defines metric aggregator.
-        The list of opentsdb aggregators:
-        http://opentsdb.net/docs/build/html/user_guide/query/aggregators.html#available-aggregators
     :param alias: legend alias. Use patterns like $tag_tagname to replace part
         of the alias for a tag value.
-    :param isCounter: defines if rate function results should
-        be interpret as counter
+    :param isCounter: defines if rate function results should be interpreted as counter
     :param counterMax: defines rate counter max value
     :param counterResetValue: defines rate counter reset value
     :param disableDownsampling: defines if downsampling should be disabled.
-        OpenTSDB docs on downsampling:
-        http://opentsdb.net/docs/build/html/user_guide/query/index.html#downsampling
     :param downsampleAggregator: defines downsampling aggregator
     :param downsampleFillPolicy: defines downsampling fill policy
     :param downsampleInterval: defines downsampling interval
     :param filters: defines the list of metric query filters.
-        OpenTSDB docs on filters:
-        http://opentsdb.net/docs/build/html/user_guide/query/index.html#filters
     :param shouldComputeRate: defines if rate function should be used.
-        OpenTSDB docs on rate function:
-        http://opentsdb.net/docs/build/html/user_guide/query/index.html#rate
-    :param currentFilterGroupBy: defines if grouping should be enabled for
-        current filter
+    :param currentFilterGroupBy: defines if grouping should be enabled for current filter
     :param currentFilterKey: defines current filter key
     :param currentFilterType: defines current filter type
     :param currentFilterValue: defines current filter value
     """
+    metric: Any
+    refId: str = ""
+    aggregator: str = 'sum'
+    alias: Optional[Any] = None
+    isCounter: bool = False
+    counterMax: Optional[Any] = None
+    counterResetValue: Optional[Any] = None
+    disableDownsampling: bool = False
+    downsampleAggregator: str = OTSDB_AGG_SUM
+    downsampleFillPolicy: str = Field(default=OTSDB_DOWNSAMPLING_FILL_POLICY_DEFAULT)
+    downsampleInterval: Optional[Any] = None
+    filters: List[Any] = Field(default_factory=list)
+    shouldComputeRate: bool = False
+    currentFilterGroupBy: bool = False
+    currentFilterKey: str = ""
+    currentFilterType: str = OTSDB_QUERY_FILTER_DEFAULT
+    currentFilterValue: str = ""
 
-    metric = attr.ib()
-    refId = attr.ib(default="")
-    aggregator = attr.ib(default='sum')
-    alias = attr.ib(default=None)
-    isCounter = attr.ib(default=False, validator=instance_of(bool))
-    counterMax = attr.ib(default=None)
-    counterResetValue = attr.ib(default=None)
-    disableDownsampling = attr.ib(default=False, validator=instance_of(bool))
-    downsampleAggregator = attr.ib(default=OTSDB_AGG_SUM)
-    downsampleFillPolicy = attr.ib(
-        default=OTSDB_DOWNSAMPLING_FILL_POLICY_DEFAULT,
-        validator=is_in(OTSDB_DOWNSAMPLING_FILL_POLICIES))
-    downsampleInterval = attr.ib(default=None)
-    filters = attr.ib(default=attr.Factory(list))
-    shouldComputeRate = attr.ib(default=False, validator=instance_of(bool))
-    currentFilterGroupBy = attr.ib(default=False, validator=instance_of(bool))
-    currentFilterKey = attr.ib(default="")
-    currentFilterType = attr.ib(default=OTSDB_QUERY_FILTER_DEFAULT)
-    currentFilterValue = attr.ib(default="")
+    @validator('downsampleFillPolicy')
+    def validate_downsample_fill_policy(cls, v):
+        if v not in OTSDB_DOWNSAMPLING_FILL_POLICIES:
+            raise ValueError(f"downsampleFillPolicy must be one of {OTSDB_DOWNSAMPLING_FILL_POLICIES}")
+        return v
 
-    def to_json_data(self):
-
+    def to_json_data(self) -> dict:
         return {
             'aggregator': self.aggregator,
             'alias': self.alias,

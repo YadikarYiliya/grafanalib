@@ -1,30 +1,25 @@
 """Helpers to create Humio-specific Grafana queries."""
 
-import attr
+from pydantic import BaseModel
 
-
-@attr.s
-class HumioTarget(object):
+class HumioTarget(BaseModel):
     """
     Generates Humio target JSON structure.
 
-    Link to Humio Grafana plugin https://grafana.com/grafana/plugins/humio-datasource/
+    Link to Humio Grafana plugin: https://grafana.com/grafana/plugins/humio-datasource/
+    Humio docs on query language: https://library.humio.com/humio-server/syntax.html
 
-    Humio docs on query language https://library.humio.com/humio-server/syntax.html
-
-    :param humioQuery: Query that will be executed on Humio
+    :param humioQuery: Query that will be executed on Humio.
     :param humioRepository: Repository to execute query on.
-    :param refId: target reference id
+    :param refId: Target reference id.
     """
+    humioQuery: str = ""
+    humioRepository: str = ""
+    refId: str = ""
 
-    humioQuery = attr.ib(default="")
-    humioRepository = attr.ib(default="")
-    refId = attr.ib(default="")
-
-    def to_json_data(self):
-
+    def to_json_data(self) -> dict:
         return {
             "humioQuery": self.humioQuery,
             "humioRepository": self.humioRepository,
-            "refId": self.refId
+            "refId": self.refId,
         }

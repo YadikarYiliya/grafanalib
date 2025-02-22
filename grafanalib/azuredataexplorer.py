@@ -1,14 +1,13 @@
 """Helpers to create Azure Data Explorer specific Grafana queries."""
 
-import attr
+from pydantic import BaseModel
 
+# Constants for result formats
 TIME_SERIES_RESULT_FORMAT = 'time_series'
 TABLE_RESULT_FORMAT = 'table'
 ADX_TIME_SERIES_RESULT_FORMAT = 'time_series_adx_series'
 
-
-@attr.s
-class AzureDataExplorerTarget(object):
+class AzureDataExplorerTarget(BaseModel):
     """
     Generates Azure Data Explorer target JSON structure.
 
@@ -24,18 +23,62 @@ class AzureDataExplorerTarget(object):
     :param alias: legend alias
     :param refId: target reference id
     """
-
-    database = attr.ib(default="")
-    query = attr.ib(default="")
-    resultFormat = attr.ib(default=TIME_SERIES_RESULT_FORMAT)
-    alias = attr.ib(default="")
-    refId = attr.ib(default="")
+    
+    # Define class attributes with type hints and default values
+    database: str = ""
+    query: str = ""
+    resultFormat: str = TIME_SERIES_RESULT_FORMAT
+    alias: str = ""
+    refId: str = ""
+    
+    class Config:
+        # Pydantic configuration for serialization and deserialization
+        use_enum_values = True
 
     def to_json_data(self):
-        return {
-            'database': self.database,
-            'query': self.query,
-            'resultFormat': self.resultFormat,
-            'alias': self.alias,
-            'refId': self.refId
-        }
+        # Convert the Pydantic model to a dictionary (JSON-like structure)
+        return self.dict()
+
+# Test function
+def test_azure_data_explorer_target():
+    # Test 1: Default values
+    target = AzureDataExplorerTarget()
+    assert target.database == ""  # Default value for database
+    assert target.query == ""  # Default value for query
+    assert target.resultFormat == TIME_SERIES_RESULT_FORMAT  # Default result format
+    assert target.alias == ""  # Default value for alias
+    assert target.refId == ""  # Default value for refId
+    
+    # Test 2: Creating with custom values
+    custom_target = AzureDataExplorerTarget(
+        database="my_database",
+        query="SELECT * FROM my_table",
+        resultFormat="table",
+        alias="my_alias",
+        refId="target_1"
+    )
+    
+    # Assert the custom values
+    assert custom_target.database == "my_database"
+    assert custom_target.query == "SELECT * FROM my_table"
+    assert custom_target.resultFormat == "table"
+    assert custom_target.alias == "my_alias"
+    assert custom_target.refId == "target_1"
+    
+    # Test 3: Converting to JSON-like dictionary
+    json_data = custom_target.to_json_data()
+    
+    # Assert the dictionary structure
+    assert json_data == {
+        'database': "my_database",
+        'query': "SELECT * FROM my_table",
+        'resultFormat': "table",
+        'alias': "my_alias",
+        'refId': "target_1"
+    }
+    
+    print("All tests passed.")
+
+# Run the tests
+if __name__ == "__main__":
+    test_azure_data_explorer_target()

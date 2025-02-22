@@ -1,11 +1,9 @@
 """Helpers to create Azure Monitor specific Grafana queries."""
 
-import attr
-from attr.validators import instance_of
+from pydantic import BaseModel
+from typing import List
 
-
-@attr.s
-class AzureMonitorMetricsTarget(object):
+class AzureMonitorMetricsTarget(BaseModel):
     """
     Generates Azure Monitor Metrics target JSON structure.
 
@@ -22,19 +20,19 @@ class AzureMonitorMetricsTarget(object):
     :param subscription: Azure Subscription ID to scope to
     :param refId: Reference ID for the target
     """
-
-    aggregation = attr.ib(default="Total")
-    dimensionFilters = attr.ib(factory=list, validator=instance_of(list))
-    metricDefinition = attr.ib(default="")
-    metricName = attr.ib(default="")
-    metricNamespace = attr.ib(default="")
-    resourceGroup = attr.ib(default="")
-    resourceName = attr.ib(default="")
-    timeGrain = attr.ib(default="auto")
-    queryType = attr.ib(default="Azure Monitor")
-    subscription = attr.ib(default="")
-    refId = attr.ib(default="")
-    alias = attr.ib(default="")
+    
+    aggregation: str = "Total"
+    dimensionFilters: List[str] = []
+    metricDefinition: str = ""
+    metricName: str = ""
+    metricNamespace: str = ""
+    resourceGroup: str = ""
+    resourceName: str = ""
+    timeGrain: str = "auto"
+    queryType: str = "Azure Monitor"
+    subscription: str = ""
+    refId: str = ""
+    alias: str = ""
 
     def to_json_data(self):
         return {
@@ -55,8 +53,7 @@ class AzureMonitorMetricsTarget(object):
         }
 
 
-@attr.s
-class AzureLogsTarget(object):
+class AzureLogsTarget(BaseModel):
     """
     Generates Azure Monitor Logs target JSON structure.
 
@@ -70,13 +67,13 @@ class AzureLogsTarget(object):
     :param subscription: Azure Subscription ID to scope to
     :param refId: Reference ID for the target
     """
-
-    query = attr.ib(default="")
-    resource = attr.ib(default="")
-    resultFormat = attr.ib(default="table")
-    queryType = attr.ib(default="Azure Log Analytics")
-    subscription = attr.ib(default="")
-    refId = attr.ib(default="")
+    
+    query: str = ""
+    resource: str = ""
+    resultFormat: str = "table"
+    queryType: str = "Azure Log Analytics"
+    subscription: str = ""
+    refId: str = ""
 
     def to_json_data(self):
         return {
@@ -91,8 +88,7 @@ class AzureLogsTarget(object):
         }
 
 
-@attr.s
-class AzureResourceGraphTarget(object):
+class AzureResourceGraphTarget(BaseModel):
     """
     Generates Azure Resource Graph target JSON structure.
 
@@ -104,12 +100,12 @@ class AzureResourceGraphTarget(object):
     :param subscription: Azure Subscription ID to scope to
     :param refId: Reference ID for the target
     """
-
-    query = attr.ib(default="")
-    resource = attr.ib(default="")
-    queryType = attr.ib(default="Azure Resource Graph")
-    subscription = attr.ib(default="")
-    refId = attr.ib(default="")
+    
+    query: str = ""
+    resource: str = ""
+    queryType: str = "Azure Resource Graph"
+    subscription: str = ""
+    refId: str = ""
 
     def to_json_data(self):
         return {
