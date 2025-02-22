@@ -1,8 +1,7 @@
 """Helpers to create Elasticsearch-specific Grafana queries."""
 
 import itertools
-from typing import Any, Dict, List
-
+from typing import Any
 from pydantic import BaseModel, Field
 
 DATE_HISTOGRAM_DEFAULT_FIELD = 'time_iso8601'
@@ -15,8 +14,8 @@ class CountMetricAgg(BaseModel):
     hide: bool = False
     inline: str = ""
 
-    def to_json_data(self) -> Dict[str, Any]:
-        settings: Dict[str, Any] = {}
+    def to_json_data(self) -> dict[str, Any]:
+        settings: dict[str, Any] = {}
         if self.inline:
             settings['script'] = {'inline': self.inline}
         return {
@@ -35,8 +34,8 @@ class MaxMetricAgg(BaseModel):
     hide: bool = False
     inline: str = ""
 
-    def to_json_data(self) -> Dict[str, Any]:
-        settings: Dict[str, Any] = {}
+    def to_json_data(self) -> dict[str, Any]:
+        settings: dict[str, Any] = {}
         if self.inline:
             settings['script'] = {'inline': self.inline}
         return {
@@ -55,8 +54,8 @@ class CardinalityMetricAgg(BaseModel):
     hide: bool = False
     inline: str = ""
 
-    def to_json_data(self) -> Dict[str, Any]:
-        settings: Dict[str, Any] = {}
+    def to_json_data(self) -> dict[str, Any]:
+        settings: dict[str, Any] = {}
         if self.inline:
             settings['script'] = {'inline': self.inline}
         return {
@@ -75,8 +74,8 @@ class AverageMetricAgg(BaseModel):
     hide: bool = False
     inline: str = ""
 
-    def to_json_data(self) -> Dict[str, Any]:
-        settings: Dict[str, Any] = {}
+    def to_json_data(self) -> dict[str, Any]:
+        settings: dict[str, Any] = {}
         if self.inline:
             settings['script'] = {'inline': self.inline}
         return {
@@ -97,8 +96,8 @@ class DerivativeMetricAgg(BaseModel):
     pipelineAgg: int = 1
     unit: str = ""
 
-    def to_json_data(self) -> Dict[str, Any]:
-        settings: Dict[str, Any] = {}
+    def to_json_data(self) -> dict[str, Any]:
+        settings: dict[str, Any] = {}
         if self.unit:
             settings['unit'] = self.unit
         return {
@@ -117,8 +116,8 @@ class SumMetricAgg(BaseModel):
     hide: bool = False
     inline: str = ""
 
-    def to_json_data(self) -> Dict[str, Any]:
-        settings: Dict[str, Any] = {}
+    def to_json_data(self) -> dict[str, Any]:
+        settings: dict[str, Any] = {}
         if self.inline:
             settings['script'] = {'inline': self.inline}
         return {
@@ -137,7 +136,7 @@ class DateHistogramGroupBy(BaseModel):
     interval: str = "auto"
     minDocCount: int = 0
 
-    def to_json_data(self) -> Dict[str, Any]:
+    def to_json_data(self) -> dict[str, Any]:
         return {
             'field': self.field,
             'id': str(self.id),
@@ -151,13 +150,13 @@ class DateHistogramGroupBy(BaseModel):
 
 
 class BucketScriptAgg(BaseModel):
-    fields: Dict[str, int] = Field(default_factory=dict)
+    fields: dict[str, int] = Field(default_factory=dict)
     id: int = 0
     hide: bool = False
     script: str = ""
 
-    def to_json_data(self) -> Dict[str, Any]:
-        pipelineVars = []
+    def to_json_data(self) -> dict[str, Any]:
+        pipelineVars: list[Any] = []
         for field_name, agg_id in self.fields.items():
             pipelineVars.append({
                 'name': str(field_name),
@@ -179,7 +178,7 @@ class Filter(BaseModel):
     label: str = ""
     query: str = ""
 
-    def to_json_data(self) -> Dict[str, Any]:
+    def to_json_data(self) -> dict[str, Any]:
         return {
             'label': self.label,
             'query': self.query,
@@ -188,9 +187,9 @@ class Filter(BaseModel):
 
 class FiltersGroupBy(BaseModel):
     id: int = 0
-    filters: List[Filter] = Field(default_factory=list)
+    filters: list[Filter] = Field(default_factory=list)
 
-    def to_json_data(self) -> Dict[str, Any]:
+    def to_json_data(self) -> dict[str, Any]:
         return {
             'id': str(self.id),
             'settings': {
@@ -208,7 +207,7 @@ class TermsGroupBy(BaseModel):
     orderBy: str = '_term'
     size: int = 0
 
-    def to_json_data(self) -> Dict[str, Any]:
+    def to_json_data(self) -> dict[str, Any]:
         return {
             'id': str(self.id),
             'type': 'terms',
@@ -224,8 +223,8 @@ class TermsGroupBy(BaseModel):
 
 class ElasticsearchTarget(BaseModel):
     alias: Any = None
-    bucketAggs: List[Any] = Field(default_factory=lambda: [DateHistogramGroupBy()])
-    metricAggs: List[Any] = Field(default_factory=lambda: [CountMetricAgg()])
+    bucketAggs: list[Any] = Field(default_factory=lambda: [DateHistogramGroupBy()])
+    metricAggs: list[Any] = Field(default_factory=lambda: [CountMetricAgg()])
     query: str = ""
     refId: str = ""
     timeField: str = "@timestamp"
@@ -242,7 +241,7 @@ class ElasticsearchTarget(BaseModel):
                 new_bucketAggs.append(agg.copy(update={"id": next(auto_ids)}))
         return self.copy(update={"bucketAggs": new_bucketAggs})
 
-    def to_json_data(self) -> Dict[str, Any]:
+    def to_json_data(self) -> dict[str, Any]:
         return {
             'alias': self.alias,
             'bucketAggs': [agg.to_json_data() for agg in self.bucketAggs],
@@ -263,8 +262,8 @@ class ElasticsearchAlertCondition(BaseModel):
     useNewAlerts: bool = False
     type: str = Field(default="query", alias="type")
 
-    def to_json_data(self) -> Dict[str, Any]:
-        query_params: List[Any] = []
+    def to_json_data(self) -> dict[str, Any]:
+        query_params: list[Any] = []
         if self.useNewAlerts:
             if self.target:
                 query_params = [self.target.refId]
@@ -291,8 +290,8 @@ class MinMetricAgg(BaseModel):
     hide: bool = False
     inline: str = ""
 
-    def to_json_data(self) -> Dict[str, Any]:
-        settings: Dict[str, Any] = {}
+    def to_json_data(self) -> dict[str, Any]:
+        settings: dict[str, Any] = {}
         if self.inline:
             settings['script'] = {'inline': self.inline}
         return {
@@ -310,10 +309,10 @@ class PercentilesMetricAgg(BaseModel):
     id: int = 0
     hide: bool = False
     inline: str = ""
-    percents: List[float] = Field(default_factory=list)
+    percents: list[float] = Field(default_factory=list)
 
-    def to_json_data(self) -> Dict[str, Any]:
-        settings: Dict[str, Any] = {}
+    def to_json_data(self) -> dict[str, Any]:
+        settings: dict[str, Any] = {}
         settings['percents'] = self.percents
         if self.inline:
             settings['script'] = {'inline': self.inline}
@@ -335,8 +334,8 @@ class RateMetricAgg(BaseModel):
     mode: str = ""
     script: str = ""
 
-    def to_json_data(self) -> Dict[str, Any]:
-        settings: Dict[str, Any] = {}
+    def to_json_data(self) -> dict[str, Any]:
+        settings: dict[str, Any] = {}
         if self.unit:
             settings["unit"] = self.unit
         if self.mode:
