@@ -429,36 +429,39 @@ class ePictBox(BaseModel):
     """
 
     angle: int = 0
-    backgroundColor: Any = "#000"  # Accepts RGBA, RGB, or str
-    blinkHigh: bool = False
-    blinkLow: bool = False
+    background_color: Any = Field(default="#000", alias="backgroundColor")
+    blink_high: bool = Field(default=False, alias="blinkHigh")
+    blink_low: bool = Field(default=False, alias="blinkLow")
     color: Any = "#000"
-    colorHigh: Any = "#000"
-    colorLow: Any = "#000"
-    colorMedium: Any = "#000"
-    colorSymbol: bool = False
-    customSymbol: str = ""
+    color_high: Any = Field(default="#000", alias="colorHigh")
+    color_low: Any = Field(default="#000", alias="colorLow")
+    color_medium: Any = Field(default="#000", alias="colorMedium")
+    color_symbol: bool = Field(default=False, alias="colorSymbol")
+    custom_symbol: str = Field(default="", alias="customSymbol")
     decimal: int = 0
-    fontSize: int = 12
-    hasBackground: bool = False
-    hasOrb: bool = False
-    hasSymbol: bool = False
-    isUsingThresholds: bool = False
-    orbHideText: bool = False
-    orbLocation: Literal["Left", "Right", "Top", "Bottom"] = "Left"
-    orbSize: int = 13
+    font_size: int = Field(default=12, alias="fontSize")
+    has_background: bool = Field(default=False, alias="hasBackground")
+    has_orb: bool = Field(default=False, alias="hasOrb")
+    has_symbol: bool = Field(default=False, alias="hasSymbol")
+    is_using_thresholds: bool = Field(default=False, alias="isUsingThresholds")
+    orb_hide_text: bool = Field(default=False, alias="orbHideText")
+    orb_location: Literal["Left", "Right", "Top", "Bottom"] = Field(
+        default="Left",
+        alias="orbLocation",
+    )
+    orb_size: int = Field(default=13, alias="orbSize")
     prefix: str = ""
-    prefixSize: int = 10
+    prefix_size: int = Field(default=10, alias="prefixSize")
     selected: bool = False
     serie: str = ""
     suffix: str = ""
-    suffixSize: int = 10
+    suffix_size: int = Field(default=10, alias="suffixSize")
     symbol: str = ""
-    symbolDefHeight: int = 32
-    symbolDefWidth: int = 32
-    symbolHeight: int = 32
-    symbolHideText: bool = False
-    symbolWidth: int = 32
+    symbol_def_height: int = Field(default=32, alias="symbolDefHeight")
+    symbol_def_width: int = Field(default=32, alias="symbolDefWidth")
+    symbol_height: int = Field(default=32, alias="symbolHeight")
+    symbol_hide_text: bool = Field(default=False, alias="symbolHideText")
+    symbol_width: int = Field(default=32, alias="symbolWidth")
     text: str = "N/A"
     thresholds: str = ""
     url: str = ""
@@ -466,40 +469,40 @@ class ePictBox(BaseModel):
     ypos: int = 0
 
     def to_json_data(self) -> dict:
-        computed_symbol = "custom" if self.customSymbol else self.symbol
-        computed_isUsingThresholds = bool(self.thresholds)
+        computed_symbol = "custom" if self.custom_symbol else self.symbol
+        computed_is_using_thresholds = bool(self.thresholds)
         return {
             "angle": self.angle,
-            "backgroundColor": self.backgroundColor,
-            "blinkHigh": self.blinkHigh,
-            "blinkLow": self.blinkLow,
+            "backgroundColor": self.background_color,
+            "blinkHigh": self.blink_high,
+            "blinkLow": self.blink_low,
             "color": self.color,
-            "colorHigh": self.colorHigh,
-            "colorLow": self.colorLow,
-            "colorMedium": self.colorMedium,
-            "colorSymbol": self.colorSymbol,
-            "customSymbol": self.customSymbol,
+            "colorHigh": self.color_high,
+            "colorLow": self.color_low,
+            "colorMedium": self.color_medium,
+            "colorSymbol": self.color_symbol,
+            "customSymbol": self.custom_symbol,
             "decimal": self.decimal,
-            "fontSize": self.fontSize,
-            "hasBackground": self.hasBackground,
-            "hasOrb": self.hasOrb,
-            "hasSymbol": self.hasSymbol,
-            "isUsingThresholds": computed_isUsingThresholds,
-            "orbHideText": self.orbHideText,
-            "orbLocation": self.orbLocation,
-            "orbSize": self.orbSize,
+            "fontSize": self.font_size,
+            "hasBackground": self.has_background,
+            "hasOrb": self.has_orb,
+            "hasSymbol": self.has_symbol,
+            "isUsingThresholds": computed_is_using_thresholds,
+            "orbHideText": self.orb_hide_text,
+            "orbLocation": self.orb_location,
+            "orbSize": self.orb_size,
             "prefix": self.prefix,
-            "prefixSize": self.prefixSize,
+            "prefixSize": self.prefix_size,
             "selected": self.selected,
             "serie": self.serie,
             "suffix": self.suffix,
-            "suffixSize": self.suffixSize,
+            "suffixSize": self.suffix_size,
             "symbol": computed_symbol,
-            "symbolDefHeight": self.symbolDefHeight,
-            "symbolDefWidth": self.symbolDefWidth,
-            "symbolHeight": self.symbolHeight,
-            "symbolHideText": self.symbolHideText,
-            "symbolWidth": self.symbolWidth,
+            "symbolDefHeight": self.symbol_def_height,
+            "symbolDefWidth": self.symbol_def_width,
+            "symbolHeight": self.symbol_height,
+            "symbolHideText": self.symbol_hide_text,
+            "symbolWidth": self.symbol_width,
             "text": self.text,
             "thresholds": self.thresholds,
             "url": self.url,
@@ -515,16 +518,16 @@ class ePictBox(BaseModel):
 
 class Grid(BaseModel):
     threshold1: Any | None = None
-    threshold1Color: RGBA = GREY1
+    threshold1_color: RGBA = Field(default=GREY1, alias="threshold1Color")
     threshold2: Any | None = None
-    threshold2Color: RGBA = GREY2
+    threshold2_color: RGBA = Field(default=GREY2, alias="threshold2Color")
 
     def to_json_data(self) -> dict:
         return {
             "threshold1": self.threshold1,
-            "threshold1Color": self.threshold1Color.to_json_data(),
+            "threshold1Color": self.threshold1_color.to_json_data(),
             "threshold2": self.threshold2,
-            "threshold2Color": self.threshold2Color.to_json_data(),
+            "threshold2Color": self.threshold2_color.to_json_data(),
         }
 
 
@@ -536,13 +539,13 @@ class Legend(BaseModel):
     show: bool = True
     total: bool = False
     values: Any | None = None
-    alignAsTable: bool = False
-    hideEmpty: bool = False
-    hideZero: bool = False
-    rightSide: bool = False
-    sideWidth: Any | None = None
+    align_as_table: bool = Field(default=False, alias="alignAsTable")
+    hide_empty: bool = Field(default=False, alias="hideEmpty")
+    hide_zero: bool = Field(default=False, alias="hideZero")
+    right_side: bool = Field(default=False, alias="rightSide")
+    side_width: Any | None = Field(default=None, alias="sideWidth")
     sort: Any | None = None
-    sortDesc: bool = False
+    sort_desc: bool = Field(default=False, alias="sortDesc")
 
     def to_json_data(self) -> dict:
         computed_values = (
@@ -558,13 +561,13 @@ class Legend(BaseModel):
             "show": self.show,
             "total": self.total,
             "values": computed_values,
-            "alignAsTable": self.alignAsTable,
-            "hideEmpty": self.hideEmpty,
-            "hideZero": self.hideZero,
-            "rightSide": self.rightSide,
-            "sideWidth": self.sideWidth,
+            "alignAsTable": self.align_as_table,
+            "hideEmpty": self.hide_empty,
+            "hideZero": self.hide_zero,
+            "rightSide": self.right_side,
+            "sideWidth": self.side_width,
             "sort": self.sort,
-            "sortDesc": self.sortDesc,
+            "sortDesc": self.sort_desc,
         }
 
 
@@ -573,36 +576,16 @@ class Legend(BaseModel):
 # ---------------------------------------------------------------------------
 
 
-def is_valid_max_per_row(value: int | None) -> int | None:
-    if value is not None and not isinstance(value, int):
-        msg = "maxPerRow should either be None or an integer"
-        raise ValueError(msg)
-    return value
-
-
 class Repeat(BaseModel):
-    """
-    Panel repetition settings.
-
-    :param direction: The direction into which to repeat ('h' or 'v')
-    :param variable: The name of the variable over whose values to repeat
-    :param maxPerRow: The maximum number of panels per row in horizontal repetition
-    """
-
     direction: Any | None = None
     variable: Any | None = None
-    maxPerRow: int | None = Field(default=None)
-
-    @field_validator("maxPerRow")
-    @classmethod
-    def validate_maxPerRow(cls, v: int | None) -> int | None:
-        return is_valid_max_per_row(v)
+    max_per_row: int | None = Field(default=None, alias="maxPerRow")
 
     def to_json_data(self) -> dict:
         return {
             "direction": self.direction,
             "variable": self.variable,
-            "maxPerRow": self.maxPerRow,
+            "maxPerRow": self.max_per_row,
         }
 
 
@@ -614,21 +597,14 @@ def is_valid_target(value: Any):
 
 
 class Target(BaseModel):
-    """
-    Metric to show.
-
-    :param expr: Graphite way to select data.
-    :param legendFormat: Target alias.
-    """
-
     expr: str = ""
     format: str = TIME_SERIES_TARGET_FORMAT
     hide: bool = False
-    legendFormat: str = ""
+    legend_format: str = Field(default="", alias="legendFormat")
     interval: str = ""
-    intervalFactor: int = 2
+    interval_factor: int = Field(default=2, alias="intervalFactor")
     metric: str = ""
-    refId: str = ""
+    ref_id: str = Field(default="", alias="refId")
     step: int = DEFAULT_STEP
     target: str = ""
     instant: bool = False
@@ -642,11 +618,11 @@ class Target(BaseModel):
             "format": self.format,
             "hide": self.hide,
             "interval": self.interval,
-            "intervalFactor": self.intervalFactor,
-            "legendFormat": self.legendFormat,
-            "alias": self.legendFormat,
+            "intervalFactor": self.interval_factor,
+            "legendFormat": self.legend_format,
+            "alias": self.legend_format,
             "metric": self.metric,
-            "refId": self.refId,
+            "refId": self.ref_id,
             "step": self.step,
             "instant": self.instant,
             "datasource": self.datasource,
@@ -654,8 +630,6 @@ class Target(BaseModel):
 
 
 class LokiTarget(BaseModel):
-    """Target for Loki LogQL queries."""
-
     datasource: str = ""
     expr: str = ""
     hide: bool = False
@@ -670,25 +644,23 @@ class LokiTarget(BaseModel):
 
 
 class SqlTarget(Target):
-    """Metric target to support SQL queries."""
-
-    rawSql: str = ""
-    rawQuery: bool = True
-    srcFilePath: str = ""
-    sqlParams: dict[str, Any] = {}
+    raw_sql: str = Field(default="", alias="rawSql")
+    raw_query: bool = Field(default=True, alias="rawQuery")
+    src_file_path: str = Field(default="", alias="srcFilePath")
+    sql_params: dict[str, Any] = Field({}, alias="sqlParams")
 
     def __init__(self, **data: Any) -> None:
         super().__init__(**data)
-        if self.srcFilePath:
-            with open(self.srcFilePath) as f:
-                self.rawSql = f.read()
-            if self.sqlParams:
-                self.rawSql = self.rawSql.format(**self.sqlParams)
+        if self.src_file_path:
+            with open(self.src_file_path) as f:
+                self.raw_sql = f.read()
+            if self.sql_params:
+                self.raw_sql = self.raw_sql.format(**self.sql_params)
 
     def to_json_data(self) -> dict:
         super_json = super().to_json_data()
-        super_json["rawSql"] = self.rawSql
-        super_json["rawQuery"] = self.rawQuery
+        super_json["rawSql"] = self.raw_sql
+        super_json["rawQuery"] = self.raw_query
         return super_json
 
 
@@ -698,30 +670,21 @@ class SqlTarget(Target):
 
 
 class Tooltip(BaseModel):
-    msResolution: bool = True
+    ms_resolution: bool = Field(default=True, alias="msResolution")
     shared: bool = True
     sort: int = 0
-    valueType: str = CUMULATIVE
+    value_type: str = Field(default=CUMULATIVE, alias="valueType")
 
     def to_json_data(self) -> dict:
         return {
-            "msResolution": self.msResolution,
+            "msResolution": self.ms_resolution,
             "shared": self.shared,
             "sort": self.sort,
-            "value_type": self.valueType,
+            "value_type": self.value_type,
         }
 
 
 class XAxis(BaseModel):
-    """
-    X Axis.
-
-    :param mode: Mode of axis can be time, series or histogram
-    :param name: X axis name
-    :param values: list of values eg. ["current"] or ["avg"]
-    :param show: show X axis
-    """
-
     mode: Literal["time", "series", "histogram"] = "time"
     name: Any | None = None
     values: list[Any] = []
@@ -737,23 +700,10 @@ class XAxis(BaseModel):
 
 
 class YAxis(BaseModel):
-    """A single Y axis.
-
-    Grafana graphs have two Y axes, a left one and a right one.
-
-    :param decimals: Defines how many decimals are displayed for Y value.
-    :param format: The display unit for the Y value
-    :param label: The Y axis label.
-    :param logBase: The scale to use for the Y value, linear, or logarithmic.
-    :param max: The maximum Y value
-    :param min: The minimum Y value
-    :param show: Show or hide the axis
-    """
-
     decimals: Any | None = None
     format: Any | None = None
     label: Any | None = None
-    logBase: int = 1
+    log_base: int = Field(default=1, alias="logBase")
     max: Any | None = None
     min: Any | None = None
     show: bool = True
@@ -763,7 +713,7 @@ class YAxis(BaseModel):
             "decimals": self.decimals,
             "format": self.format,
             "label": self.label,
-            "logBase": self.logBase,
+            "logBase": self.log_base,
             "max": self.max,
             "min": self.min,
             "show": self.show,
@@ -771,8 +721,6 @@ class YAxis(BaseModel):
 
 
 class YAxes(BaseModel):
-    """The pair of Y axes on a Grafana graph."""
-
     left: YAxis = YAxis(format=SHORT_FORMAT)
     right: YAxis = YAxis(format=SHORT_FORMAT)
 
@@ -781,20 +729,16 @@ class YAxes(BaseModel):
 
 
 def single_y_axis(**kwargs) -> YAxes:
-    """Specify that a graph has a single Y axis."""
     axis = YAxis(**kwargs)
     return YAxes(left=axis, right=axis)
 
 
 def to_y_axes(data: Any) -> YAxes:
-    """Backwards compatibility for 'YAxes'."""
     if isinstance(data, YAxes):
         return data
     if not isinstance(data, (list, tuple)):
         msg = f"Y axes must be either YAxes or a list of two values, got {data!r}"
-        raise ValueError(
-            msg,
-        )
+        raise ValueError(msg)
     if len(data) != 2:
         msg = f"Must specify exactly two YAxes, got {len(data)}: {data!r}"
         raise ValueError(msg)
@@ -807,7 +751,6 @@ def to_y_axes(data: Any) -> YAxes:
 
 
 def _balance_panels(panels: list[Any]) -> list[Any]:
-    """Resize panels so they are evenly spaced."""
     allotted_spans = sum(panel.span if panel.span else 0 for panel in panels)
     no_span_set = [panel for panel in panels if panel.span is None]
     auto_span = math.ceil((TOTAL_SPAN - allotted_spans) / (len(no_span_set) or 1))
@@ -823,26 +766,17 @@ def _balance_panels(panels: list[Any]) -> list[Any]:
 
 
 class GridPos(BaseModel):
-    """
-    GridPos describes the panel size and position in grid coordinates.
-
-    :param h: height of the panel (each unit represents 30 pixels)
-    :param w: width of the panel (1-24)
-    :param x: x coordinate of the panel
-    :param y: y coordinate of the panel
-    """
-
-    h: int
-    w: int
-    x: int
-    y: int
+    h: int = Field(gt=0, description="Height must be greater than 0")
+    w: int = Field(ge=1, le=24, description="Width must be in the range 1-24")
+    x: int = Field(ge=0, description="X coordinate must be non-negative")
+    y: int = Field(ge=0, description="Y coordinate must be non-negative")
 
     def to_json_data(self) -> dict:
         return {"h": self.h, "w": self.w, "x": self.x, "y": self.y}
 
 
 class Annotations(BaseModel):
-    list_: list[Any] = []
+    list_: list[Any] = Field([], alias="list")
 
     def to_json_data(self) -> dict:
         return {"list": self.list_}
@@ -850,22 +784,22 @@ class Annotations(BaseModel):
 
 class DataLink(BaseModel):
     title: Any
-    linkUrl: str = ""
-    isNewTab: bool = False
+    link_url: str = Field(alias="linkUrl")
+    is_new_tab: bool = Field(default=False, alias="isNewTab")
 
     def to_json_data(self) -> dict:
         return {
             "title": self.title,
-            "url": self.linkUrl,
-            "targetBlank": self.isNewTab,
+            "url": self.link_url,
+            "targetBlank": self.is_new_tab,
         }
 
 
 class DataSourceInput(BaseModel):
     name: Any
     label: Any
-    pluginId: Any
-    pluginName: Any
+    plugin_id: Any = Field(alias="pluginId")
+    plugin_name: Any = Field(alias="pluginName")
     description: str = ""
 
     def to_json_data(self) -> dict:
@@ -873,8 +807,8 @@ class DataSourceInput(BaseModel):
             "description": self.description,
             "label": self.label,
             "name": self.name,
-            "pluginId": self.pluginId,
-            "pluginName": self.pluginName,
+            "pluginId": self.plugin_id,
+            "pluginName": self.plugin_name,
             "type": "datasource",
         }
 
@@ -896,44 +830,40 @@ class ConstantInput(BaseModel):
 
 
 class DashboardLink(BaseModel):
-    """Create a link to other dashboards, or external resources."""
-
-    asDropdown: bool = False
-    icon: DASHBOARD_LINK_ICON = Field("external link")
-    includeVars: bool = False
-    keepTime: bool = True
-    tags: list[str] = list
-    targetBlank: bool = False
+    as_dropdown: bool = Field(default=False, alias="asDropdown")
+    icon: str = "external link"
+    include_vars: bool = Field(default=False, alias="includeVars")
+    keep_time: bool = Field(default=True, alias="keepTime")
+    tags: list[str] = []
+    target_blank: bool = Field(default=False, alias="targetBlank")
     title: str = ""
     tooltip: str = ""
-    type: DASHBOARD_TYPE = Field("dashboards")
+    type_: str = Field(default="dashboards", alias="type")
     uri: str = ""
 
     def to_json_data(self) -> dict:
         return {
-            "asDropdown": self.asDropdown,
+            "asDropdown": self.as_dropdown,
             "icon": self.icon,
-            "includeVars": self.includeVars,
-            "keepTime": self.keepTime,
+            "includeVars": self.include_vars,
+            "keepTime": self.keep_time,
             "tags": self.tags,
-            "targetBlank": self.targetBlank,
+            "targetBlank": self.target_blank,
             "title": self.title,
             "tooltip": self.tooltip,
-            "type": self.type,
+            "type": self.type_,
             "url": self.uri,
         }
 
 
 class ExternalLink(BaseModel):
-    """ExternalLink creates a top-level link attached to a dashboard."""
-
     uri: Any
     title: Any
-    keepTime: bool = False
+    keep_time: bool = Field(default=False, alias="keepTime")
 
     def to_json_data(self) -> dict:
         return {
-            "keepTime": self.keepTime,
+            "keepTime": self.keep_time,
             "title": self.title,
             "type": "link",
             "url": self.uri,
@@ -946,33 +876,31 @@ class ExternalLink(BaseModel):
 
 
 class Template(BaseModel):
-    """Template creates a new 'variable' for the dashboard."""
-
     name: Any
     query: Any
     current_: dict[str, Any] = Field(default={}, exclude=True)
     default: Any | None = None
-    dataSource: Any | None = None
+    data_source: Any | None = Field(default=None, alias="dataSource")
     label: Any | None = None
-    allValue: Any | None = None
-    includeAll: bool = False
+    all_value: Any | None = Field(default=None, alias="allValue")
+    include_all: bool = Field(default=False, alias="includeAll")
     multi: bool = False
     options: list[Any] = []
     regex: Any | None = None
-    useTags: bool = False
-    tagsQuery: Any | None = None
-    tagValuesQuery: Any | None = None
-    refresh: int = REFRESH_ON_DASHBOARD_LOAD
-    type: str = "query"
-    hide: int = SHOW
-    sort: Any = SORT_ALPHA_ASC
+    use_tags: bool = Field(default=False, alias="useTags")
+    tags_query: Any | None = Field(default=None, alias="tagsQuery")
+    tag_values_query: Any | None = Field(default=None, alias="tagValuesQuery")
+    refresh: int = 1
+    type_: str = Field(default="query", alias="type")
+    hide: int = 0
+    sort: Any = 1
     auto: bool = False
-    autoCount: int = 30
-    autoMin: Any = DEFAULT_MIN_AUTO_INTERVAL
+    auto_count: int = Field(default=30, alias="autoCount")
+    auto_min: Any = Field(default="10s", alias="autoMin")
 
     def __init__(self, **data: Any) -> None:
         super().__init__(**data)
-        if self.type == "custom":
+        if self.type_ == "custom":
             if not self.options:
                 for value in str(self.query).split(","):
                     is_default = value == self.default
@@ -995,11 +923,11 @@ class Template(BaseModel):
 
     def to_json_data(self) -> dict:
         return {
-            "allValue": self.allValue,
-            "current": self._current,
-            "datasource": self.dataSource,
+            "allValue": self.all_value,
+            "current": self.current_,
+            "datasource": self.data_source,
             "hide": self.hide,
-            "includeAll": self.includeAll,
+            "includeAll": self.include_all,
             "label": self.label,
             "multi": self.multi,
             "name": self.name,
@@ -1008,18 +936,18 @@ class Template(BaseModel):
             "refresh": self.refresh,
             "regex": self.regex,
             "sort": self.sort,
-            "type": self.type,
-            "useTags": self.useTags,
-            "tagsQuery": self.tagsQuery,
-            "tagValuesQuery": self.tagValuesQuery,
+            "type": self.type_,
+            "useTags": self.use_tags,
+            "tagsQuery": self.tags_query,
+            "tagValuesQuery": self.tag_values_query,
             "auto": self.auto,
-            "auto_min": self.autoMin,
-            "auto_count": self.autoCount,
+            "auto_min": self.auto_min,
+            "auto_count": self.auto_count,
         }
 
 
 class Templating(BaseModel):
-    list_: list[Any] = []
+    list_: list[Any] = Field([], alias="list")
 
     def to_json_data(self) -> dict:
         return {"list": self.list_}
@@ -1042,25 +970,16 @@ DEFAULT_TIME = Time(start="now-1h", end="now")
 
 
 class TimePicker(BaseModel):
-    """
-    Time Picker.
-
-    :param refreshIntervals: dashboard auto-refresh interval options
-    :param timeOptions: dashboard time range options
-    :param nowDelay: exclude recent data that may be incomplete
-    :param hidden: hide the time picker from dashboard
-    """
-
-    refreshIntervals: list[Any]
-    timeOptions: list[Any]
-    nowDelay: Any | None = None
+    refresh_intervals: list[Any] = Field(alias="refreshIntervals")
+    time_options: list[Any] = Field(alias="timeOptions")
+    now_delay: Any | None = Field(default=None, alias="nowDelay")
     hidden: bool = False
 
     def to_json_data(self) -> dict:
         return {
-            "refresh_intervals": self.refreshIntervals,
-            "time_options": self.timeOptions,
-            "nowDelay": self.nowDelay,
+            "refresh_intervals": self.refresh_intervals,
+            "time_options": self.time_options,
+            "nowDelay": self.now_delay,
             "hidden": self.hidden,
         }
 
@@ -1083,6 +1002,7 @@ class Evaluator(BaseModel):
         return {"type": self.type, "params": self.params}
 
 
+# TODO: Update these to instances of Evaluator, not functions
 def GreaterThan(value: Any) -> Evaluator:
     return Evaluator(type=EVAL_GT, params=[value])
 
@@ -1129,26 +1049,30 @@ class AlertCondition(BaseModel):
 
     :param target: Metric the alert condition is based on.
     :param evaluator: Evaluator function.
-    :param timeRange: TimeRange for the condition.
+    :param time_range: TimeRange for the condition.
     :param operator: Combination operator.
-    :param reducerType: Reducer type.
-    :param useNewAlerts: Whether to use Grafana 8.x new alerts.
-    :param type: Condition type.
+    :param reducer_type: Reducer type.
+    :param use_new_alerts: Whether to use Grafana 8.x new alerts.
+    :param type_: Condition type.
     """
 
-    target: Target | None = None
-    evaluator: Evaluator
-    timeRange: TimeRange | None = None
-    operator: str = OP_AND
-    reducerType: str = RTYPE_LAST
-    useNewAlerts: bool = False
-    type: str = Field(default=CTYPE_QUERY, alias="type")
+    target: Any | None = None
+    evaluator: Any
+    time_range: Any | None = Field(default=None, alias="timeRange")
+    operator: str = Field(default="and", alias="operator")
+    reducer_type: str = Field(default="last", alias="reducerType")
+    use_new_alerts: bool = Field(default=False, alias="useNewAlerts")
+    type_: str = Field(default="query", alias="type")
 
     def __get_query_params(self) -> list[Any]:
-        if self.useNewAlerts:
-            return [self.target.refId] if self.target else []
-        if self.target and self.timeRange:
-            return [self.target.refId, self.timeRange.from_time, self.timeRange.to_time]
+        if self.use_new_alerts:
+            return [self.target.ref_id] if self.target else []
+        if self.target and self.time_range:
+            return [
+                self.target.ref_id,
+                self.time_range.from_time,
+                self.time_range.to_time,
+            ]
         return []
 
     def to_json_data(self) -> dict:
@@ -1159,56 +1083,38 @@ class AlertCondition(BaseModel):
                 "model": self.target.to_json_data() if self.target else {},
                 "params": self.__get_query_params(),
             },
-            "reducer": {"params": [], "type": self.reducerType},
-            "type": self.type,
+            "reducer": {"params": [], "type": self.reducer_type},
+            "type": self.type_,
         }
-        if self.useNewAlerts:
+        if self.use_new_alerts:
             condition["query"].pop("model", None)
         return condition
 
 
 class AlertExpression(BaseModel):
-    """
-    An alert expression to be evaluated in Grafana v9.x+.
-
-    :param refId: Expression reference ID.
-    :param expression: Expression string.
-    :param conditions: list of AlertConditions.
-    :param expressionType: Expression type.
-    :param hide: Whether to hide the alert.
-    :param intervalMs: Evaluation interval in ms.
-    :param maxDataPoints: Maximum data points.
-    :param reduceFunction: Reducer function.
-    :param reduceMode: Reducer mode.
-    :param reduceReplaceWith: Replacement value.
-    :param resampleWindow: Resample window.
-    :param resampleDownsampler: Downsampler.
-    :param resampleUpsampler: Upsampler.
-    """
-
-    refId: Any
+    ref_id: Any
     expression: str
     conditions: list[AlertCondition] = []
-    expressionType: str = EXP_TYPE_CLASSIC
+    expression_type: str = Field(default="classic_conditions", alias="expressionType")
     hide: bool = False
-    intervalMs: int = 1000
-    maxDataPoints: int = 43200
-    reduceFunction: str = EXP_REDUCER_FUNC_MEAN
-    reduceMode: str = EXP_REDUCER_MODE_STRICT
-    reduceReplaceWith: Any = 0
-    resampleWindow: str = "10s"
-    resampleDownsampler: Any = "mean"
-    resampleUpsampler: Any = "fillna"
+    interval_ms: int = Field(default=1000, alias="intervalMs")
+    max_data_points: int = Field(default=43200, alias="maxDataPoints")
+    reduce_function: str = Field(default="mean", alias="reduceFunction")
+    reduce_mode: str = Field(default="strict", alias="reduceMode")
+    reduce_replace_with: Any = Field(default=0, alias="reduceReplaceWith")
+    resample_window: str = Field(default="10s", alias="resampleWindow")
+    resample_downsampler: Any = Field(default="mean", alias="resampleDownsampler")
+    resample_upsampler: Any = Field(default="fillna", alias="resampleUpsampler")
 
     def to_json_data(self) -> dict:
         conds = []
         for condition in self.conditions:
-            condition.useNewAlerts = True
+            condition.use_new_alerts = True
             if condition.target is None:
-                condition.target = Target(refId=self.expression)
+                condition.target = Any(ref_id=self.expression)
             conds.append(condition.to_json_data())
         return {
-            "refId": self.refId,
+            "refId": self.ref_id,
             "queryType": "",
             "relativeTimeRange": {"from": 0, "to": 0},
             "datasourceUid": "-100",
@@ -1217,18 +1123,18 @@ class AlertExpression(BaseModel):
                 "datasource": {"type": "__expr__", "uid": "-100"},
                 "expression": self.expression,
                 "hide": self.hide,
-                "intervalMs": self.intervalMs,
-                "maxDataPoints": self.maxDataPoints,
-                "refId": self.refId,
-                "type": self.expressionType,
-                "reducer": self.reduceFunction,
+                "intervalMs": self.interval_ms,
+                "maxDataPoints": self.max_data_points,
+                "refId": self.ref_id,
+                "type": self.expression_type,
+                "reducer": self.reduce_function,
                 "settings": {
-                    "mode": self.reduceMode,
-                    "replaceWithValue": self.reduceReplaceWith,
+                    "mode": self.reduce_mode,
+                    "replaceWithValue": self.reduce_replace_with,
                 },
-                "downsampler": self.resampleDownsampler,
-                "upsampler": self.resampleUpsampler,
-                "window": self.resampleWindow,
+                "downsampler": self.resample_downsampler,
+                "upsampler": self.resample_upsampler,
+                "window": self.resample_window,
             },
         }
 
@@ -1239,61 +1145,37 @@ class AlertExpression(BaseModel):
 
 
 class Alert(BaseModel):
-    """
-    Alert object.
-
-    :param name: Alert name.
-    :param message: Alert message.
-    :param alertConditions: Alert conditions.
-    :param executionErrorState: Execution error state.
-    :param frequency: Frequency of evaluation.
-    :param handler: Alert handler.
-    :param noDataState: No-data state.
-    :param notifications: list of notifications.
-    :param gracePeriod: Grace period.
-    :param alertRuleTags: Alert rule tags.
-    """
-
     name: Any
     message: Any
-    alertConditions: Any
-    executionErrorState: str = STATE_ALERTING
+    alert_conditions: list[AlertCondition] = Field(default=[], alias="alertConditions")
+    execution_error_state: str = Field(default="alerting", alias="executionErrorState")
     frequency: str = "60s"
     handler: int = 1
-    noDataState: str = STATE_NO_DATA
+    no_data_state: str = Field(default="no_data", alias="noDataState")
     notifications: list[Any] = []
-    gracePeriod: str = "5m"
-    alertRuleTags: dict[str, str] = {}
+    grace_period: str = Field(default="5m", alias="gracePeriod")
+    alert_rule_tags: dict[str, str] = Field({}, alias="alertRuleTags")
 
     def to_json_data(self) -> dict:
         return {
-            "conditions": self.alertConditions,
-            "executionErrorState": self.executionErrorState,
+            "conditions": self.alert_conditions,
+            "executionErrorState": self.execution_error_state,
             "frequency": self.frequency,
             "handler": self.handler,
             "message": self.message,
             "name": self.name,
-            "noDataState": self.noDataState,
+            "noDataState": self.no_data_state,
             "notifications": self.notifications,
-            "for": self.gracePeriod,
-            "alertRuleTags": self.alertRuleTags,
+            "for": self.grace_period,
+            "alertRuleTags": self.alert_rule_tags,
         }
 
 
 class AlertGroup(BaseModel):
-    """
-    Create an alert group of Grafana 8.x alerts.
-
-    :param name: Alert group name.
-    :param rules: list of AlertRule objects.
-    :param folder: Folder for alerts.
-    :param evaluateInterval: Evaluation interval.
-    """
-
     name: Any
     rules: list[Any] = []
     folder: str = "alert"
-    evaluateInterval: str = "1m"
+    evaluate_interval: str = Field(default="1m", alias="evaluateInterval")
 
     def group_rules(self, rules: list[Any]) -> list[Any]:
         grouped_rules = []
@@ -1305,7 +1187,7 @@ class AlertGroup(BaseModel):
     def to_json_data(self) -> dict:
         return {
             "name": self.name,
-            "interval": self.evaluateInterval,
+            "interval": self.evaluate_interval,
             "rules": self.group_rules(self.rules),
             "folder": self.folder,
         }
@@ -1315,57 +1197,32 @@ def is_valid_triggers(value: list[Any]) -> list[Any]:
     for trigger in value:
         if not isinstance(trigger, tuple):
             msg = "triggers must be a list of [(Target, AlertCondition)] tuples"
-            raise ValueError(
-                msg,
-            )
-        if list(map(type, trigger)) != [Target, AlertCondition]:
+            raise ValueError(msg)
+        if list(map(type, trigger)) != [Any, AlertCondition]:
             msg = "triggers must be a list of [(Target, AlertCondition)] tuples"
-            raise ValueError(
-                msg,
-            )
-        is_valid_target(trigger[0])
+            raise ValueError(msg)
     return value
 
 
 def is_valid_triggersv9(value: list[Any]) -> list[Any]:
     for trigger in value:
-        if not (isinstance(trigger, (Target, AlertExpression))):
+        if not isinstance(trigger, (Any, AlertExpression)):
             msg = "triggers must either be a Target or AlertExpression"
             raise ValueError(msg)
-        if isinstance(trigger, Target):
-            is_valid_target(trigger)
     return value
 
 
 class AlertRulev8(BaseModel):
-    """
-    Create a Grafana 8.x Alert Rule.
-
-    :param title: Alert title.
-    :param triggers: list of (Target, AlertCondition) tuples.
-    :param annotations: Annotations.
-    :param labels: Labels.
-    :param evaluateInterval: Evaluation frequency.
-    :param evaluateFor: Duration before alert.
-    :param noDataAlertState: No-data state.
-    :param errorAlertState: Error state.
-    :param timeRangeFrom: Start time range.
-    :param timeRangeTo: End time range.
-    :param uid: Unique alert UID.
-    :param dashboard_uid: Dashboard UID.
-    :param panel_id: Panel ID.
-    """
-
     title: Any
     triggers: list[Any] = Field(..., validator=is_valid_triggers)
     annotations: dict[Any, Any] = {}
     labels: dict[Any, Any] = {}
-    evaluateInterval: str = DEFAULT_ALERT_EVALUATE_INTERVAL
-    evaluateFor: str = DEFAULT_ALERT_EVALUATE_FOR
-    noDataAlertState: str = Field(default=ALERTRULE_STATE_DATA_ALERTING)
-    errorAlertState: str = Field(default=ALERTRULE_STATE_DATA_ALERTING)
-    timeRangeFrom: int = 300
-    timeRangeTo: int = 0
+    evaluate_interval: str = Field(default="1m", alias="evaluateInterval")
+    evaluate_for: str = Field(default="5m", alias="evaluateFor")
+    no_data_alert_state: str = Field(default="Alerting", alias="noDataAlertState")
+    error_alert_state: str = Field(default="Alerting", alias="errorAlertState")
+    time_range_from: int = Field(default=300, alias="timeRangeFrom")
+    time_range_to: int = Field(default=0, alias="timeRangeTo")
     uid: str | None = None
     dashboard_uid: str = ""
     panel_id: int = 0
@@ -1374,20 +1231,20 @@ class AlertRulev8(BaseModel):
     def to_json_data(self) -> dict:
         data = []
         conditions = []
-        for target, condition in self.triggers:
+        for trigger, condition in self.triggers:
             data.append(
                 {
-                    "refId": target.refId,
+                    "refId": trigger.ref_id,
                     "relativeTimeRange": {
-                        "from": self.timeRangeFrom,
-                        "to": self.timeRangeTo,
+                        "from": self.time_range_from,
+                        "to": self.time_range_to,
                     },
-                    "datasourceUid": target.datasource,
-                    "model": target.to_json_data(),
-                },
+                    "datasourceUid": trigger.datasource,
+                    "model": trigger.to_json_data(),
+                }
             )
-            condition.useNewAlerts = True
-            condition.target = target
+            condition.use_new_alerts = True
+            condition.target = trigger
             conditions.append(condition.to_json_data())
         data.append(
             {
@@ -1398,19 +1255,19 @@ class AlertRulev8(BaseModel):
                     "refId": "CONDITION",
                     "type": "classic_conditions",
                 },
-            },
+            }
         )
         return {
-            "for": self.evaluateFor,
+            "for": self.evaluate_for,
             "labels": self.labels,
             "annotations": self.annotations,
             "grafana_alert": {
                 "title": self.title,
                 "condition": "CONDITION",
                 "data": data,
-                "intervalSeconds": self.evaluateInterval,
-                "exec_err_state": self.errorAlertState,
-                "no_data_state": self.noDataAlertState,
+                "intervalSeconds": self.evaluate_interval,
+                "exec_err_state": self.error_alert_state,
+                "no_data_state": self.no_data_alert_state,
                 "uid": self.uid,
                 "rule_group": self.rule_group,
             },
@@ -1418,34 +1275,16 @@ class AlertRulev8(BaseModel):
 
 
 class AlertRulev9(BaseModel):
-    """
-    Create a Grafana 9.x+ Alert Rule.
-
-    :param title: Alert title.
-    :param triggers: list of Targets or AlertExpressions.
-    :param annotations: Annotations.
-    :param labels: Labels.
-    :param condition: Condition reference (e.g. "B").
-    :param evaluateFor: Duration before alert fires.
-    :param noDataAlertState: No-data state.
-    :param errorAlertState: Error state.
-    :param timeRangeFrom: Start time range.
-    :param timeRangeTo: End time range.
-    :param uid: Unique alert UID.
-    :param dashboard_uid: Dashboard UID.
-    :param panel_id: Panel ID.
-    """
-
     title: Any
-    triggers: list[Any] = Field(default_factory=list, validator=is_valid_triggersv9)
+    triggers: list[Any] = Field([], validator=is_valid_triggersv9)
     annotations: dict[Any, Any] = {}
     labels: dict[Any, Any] = {}
-    evaluateFor: str = DEFAULT_ALERT_EVALUATE_FOR
-    noDataAlertState: str = Field(default=ALERTRULE_STATE_DATA_ALERTING)
-    errorAlertState: str = Field(default=ALERTRULE_STATE_DATA_ALERTING)
+    evaluate_for: str = Field(default="5m", alias="evaluateFor")
+    no_data_alert_state: str = Field(default="Alerting", alias="noDataAlertState")
+    error_alert_state: str = Field(default="Alerting", alias="errorAlertState")
     condition: str = "B"
-    timeRangeFrom: int = 300
-    timeRangeTo: int = 0
+    time_range_from: int = Field(default=300, alias="timeRangeFrom")
+    time_range_to: int = Field(default=0, alias="timeRangeTo")
     uid: str | None = None
     dashboard_uid: str = ""
     panel_id: int = 0
@@ -1453,42 +1292,36 @@ class AlertRulev9(BaseModel):
     def to_json_data(self) -> dict:
         data = []
         for trigger in self.triggers:
-            if isinstance(trigger, Target):
+            if isinstance(trigger, Any):
                 data.append(
                     {
-                        "refId": trigger.refId,
+                        "refId": trigger.ref_id,
                         "relativeTimeRange": {
-                            "from": self.timeRangeFrom,
-                            "to": self.timeRangeTo,
+                            "from": self.time_range_from,
+                            "to": self.time_range_to,
                         },
                         "datasourceUid": trigger.datasource,
                         "model": trigger.to_json_data(),
-                    },
+                    }
                 )
             else:
                 data.append(trigger.to_json_data())
         return {
             "uid": self.uid,
-            "for": self.evaluateFor,
+            "for": self.evaluate_for,
             "labels": self.labels,
             "annotations": self.annotations,
             "grafana_alert": {
                 "title": self.title,
                 "condition": self.condition,
                 "data": data,
-                "no_data_state": self.noDataAlertState,
-                "exec_err_state": self.errorAlertState,
+                "no_data_state": self.no_data_alert_state,
+                "exec_err_state": self.error_alert_state,
             },
         }
 
 
 class AlertFileBasedProvisioning(BaseModel):
-    """
-    Used to generate JSON data for file based alert provisioning.
-
-    :param groups: list of AlertGroups.
-    """
-
     groups: Any
 
     def to_json_data(self) -> dict:
@@ -1509,26 +1342,43 @@ class Notification(BaseModel):
 
 class Dashboard(BaseModel):
     title: Any
-    annotations: Annotations
+    annotations: Any
     description: str = ""
     editable: bool = True
-    gnetId: Any | None = None
-    graphTooltip: int = 0  # GRAPH_TOOLTIP_MODE_NOT_SHARED
-    hideControls: bool = False
+    gnet_id: Any | None = Field(default=None, alias="gnetId")
+    graph_tooltip: int = Field(default=0, alias="graphTooltip")
+    hide_controls: bool = Field(default=False, alias="hideControls")
     id: Any | None = None
     inputs: list[Any] = []
     links: list[Any] = []
     panels: list[Any] = []
-    refresh: str = DEFAULT_REFRESH
+    refresh: str = "10s"
     rows: list[Any] = []
-    schemaVersion: int = SCHEMA_VERSION
-    sharedCrosshair: bool = False
-    style: Any = DARK_STYLE
+    schema_version: int = Field(default=12, alias="schemaVersion")
+    shared_crosshair: bool = Field(default=False, alias="sharedCrosshair")
+    style: Any = "dark"
     tags: list[Any] = []
-    templating: Templating
-    time: Time = DEFAULT_TIME
-    timePicker: TimePicker = DEFAULT_TIME_PICKER
-    timezone: Any = UTC
+    templating: Any
+    time: Any = Field(TimeRange(from_time="now-1h", to_time="now"))
+    time_picker: Any = Field(
+        default=TimePicker(
+            refreshIntervals=[
+                "5s",
+                "10s",
+                "30s",
+                "1m",
+                "5m",
+                "15m",
+                "30m",
+                "1h",
+                "2h",
+                "1d",
+            ],
+            timeOptions=["5m", "15m", "1h", "6h", "12h", "24h", "2d", "7d", "30d"],
+        ),
+        alias="timePicker",
+    )
+    timezone: Any = "utc"
     version: int = 0
     uid: Any | None = None
 
@@ -1547,7 +1397,6 @@ class Dashboard(BaseModel):
         return self.copy(update={"rows": new_rows, "panels": new_panels})
 
     def auto_panel_ids(self):
-        """Assign unique IDs to panels without IDs."""
         ids = {panel.id for panel in self._iter_panels() if panel.id}
         auto_ids = (i for i in itertools.count(1) if i not in ids)
 
@@ -1558,28 +1407,28 @@ class Dashboard(BaseModel):
 
     def to_json_data(self) -> dict:
         if self.panels and self.rows:
-            pass
+            pass  # Your logic here
         return {
             "__inputs": self.inputs,
             "annotations": self.annotations.to_json_data(),
             "description": self.description,
             "editable": self.editable,
-            "gnetId": self.gnetId,
-            "graphTooltip": self.graphTooltip,
-            "hideControls": self.hideControls,
+            "gnetId": self.gnet_id,
+            "graphTooltip": self.graph_tooltip,
+            "hideControls": self.hide_controls,
             "id": self.id,
             "links": self.links,
             "panels": self.panels if not self.rows else [],
             "refresh": self.refresh,
             "rows": self.rows,
-            "schemaVersion": self.schemaVersion,
-            "sharedCrosshair": self.sharedCrosshair,
+            "schemaVersion": self.schema_version,
+            "sharedCrosshair": self.shared_crosshair,
             "style": self.style,
             "tags": self.tags,
             "templating": self.templating.to_json_data(),
             "title": self.title,
             "time": self.time.to_json_data(),
-            "timepicker": self.timePicker.to_json_data(),
+            "timepicker": self.time_picker.to_json_data(),
             "timezone": self.timezone,
             "version": self.version,
             "uid": self.uid,
@@ -1605,122 +1454,84 @@ def _deep_update(base_dict: dict, extra_dict: dict | None) -> dict:
 
 
 class Panel(BaseModel):
-    """
-    Generic panel for shared defaults.
-
-    :param dataSource: Grafana datasource name.
-    :param targets: list of metric targets.
-    :param title: Panel title.
-    :param cacheTimeout: Query cache timeout.
-    :param description: Panel description.
-    :param editable: Whether panel is editable.
-    :param error: Panel error state.
-    :param height: Panel height.
-    :param gridPos: Grid position.
-    :param hideTimeOverride: Whether to hide time overrides.
-    :param id: Panel ID.
-    :param interval: Query interval.
-    :param links: Additional links.
-    :param maxDataPoints: Maximum data points.
-    :param minSpan: Minimum span.
-    :param repeat: Repeat settings.
-    :param span: Panel span.
-    :param thresholds: Thresholds.
-    :param thresholdType: Type of threshold.
-    :param timeFrom: Time override.
-    :param timeShift: Time shift.
-    :param transparent: Whether panel is transparent.
-    :param transformations: Transformations.
-    :param extraJson: Extra JSON overrides.
-    """
-
-    dataSource: Any | None = None
+    data_source: Any | None = Field(default=None, alias="dataSource")
     targets: list[Any] = []
     title: str = ""
-    cacheTimeout: Any | None = None
+    cache_timeout: Any | None = Field(default=None, alias="cacheTimeout")
     description: Any | None = None
     editable: bool = True
     error: bool = False
     height: Any | None = None
-    gridPos: Any | None = None
-    hideTimeOverride: bool = False
+    grid_pos: Any | None = Field(default=None, alias="gridPos")
+    hide_time_override: bool = Field(default=False, alias="hideTimeOverride")
     id: Any | None = None
     interval: Any | None = None
     links: list[Any] = []
-    maxDataPoints: int = 100
-    minSpan: Any | None = None
+    max_data_points: int = Field(default=100, alias="maxDataPoints")
+    min_span: Any | None = Field(default=None, alias="minSpan")
     repeat: Repeat
     span: Any | None = None
     thresholds: list[Any] = []
-    thresholdType: str = "absolute"
-    timeFrom: Any | None = None
-    timeShift: Any | None = None
-    transparent: bool = False
+    threshold_type: str = Field(default="absolute", alias="thresholdType")
+    time_from: Any | None = Field(default=None, alias="timeFrom")
+    time_shift: Any | None = Field(default=None, alias="timeShift")
+    transparent: bool = Field(default=False)
     transformations: list[Any] = []
-    extraJson: dict[Any, Any] | None = None
+    extra_json: dict[Any, Any] | None = Field(default=None, alias="extraJson")
 
     def _map_panels(self, f) -> Any:
         return f(self)
 
     def panel_json(self, overrides: dict) -> dict:
         res = {
-            "cacheTimeout": self.cacheTimeout,
-            "datasource": self.dataSource,
+            "cacheTimeout": self.cache_timeout,
+            "datasource": self.data_source,
             "description": self.description,
             "editable": self.editable,
             "error": self.error,
             "fieldConfig": {
                 "defaults": {
                     "thresholds": {
-                        "mode": self.thresholdType,
+                        "mode": self.threshold_type,
                         "steps": self.thresholds,
                     },
                 },
             },
             "height": self.height,
-            "gridPos": self.gridPos,
-            "hideTimeOverride": self.hideTimeOverride,
+            "gridPos": self.grid_pos,
+            "hideTimeOverride": self.hide_time_override,
             "id": self.id,
             "interval": self.interval,
             "links": self.links,
-            "maxDataPoints": self.maxDataPoints,
-            "minSpan": self.minSpan,
+            "maxDataPoints": self.max_data_points,
+            "minSpan": self.min_span,
             "repeat": self.repeat.variable,
             "repeatDirection": self.repeat.direction,
-            "maxPerRow": self.repeat.maxPerRow,
+            "maxPerRow": self.repeat.max_per_row,
             "span": self.span,
             "targets": self.targets,
-            "timeFrom": self.timeFrom,
-            "timeShift": self.timeShift,
+            "timeFrom": self.time_from,
+            "timeShift": self.time_shift,
             "title": self.title,
             "transparent": self.transparent,
             "transformations": self.transformations,
         }
         _deep_update(res, overrides)
-        _deep_update(res, self.extraJson)
+        _deep_update(res, self.extra_json)
         return res
 
 
 class ePict(Panel):
-    """
-    Generates ePict panel json structure.
-    https://grafana.com/grafana/plugins/larona-epict-panel/.
-
-    :param autoScale: Whether to auto scale image to panel size.
-    :param bgURL: Where to load the image from.
-    :param boxes: The info boxes to be placed on the image.
-    """
-
-    bgURL: str = ""
-    autoScale: bool = True
+    bg_url: str = Field(default="", alias="bgURL")
+    auto_scale: bool = Field(default=True, alias="autoScale")
     boxes: list[ePictBox] = []
 
     def to_json_data(self) -> dict:
         graph_object = {
-            "type": EPICT_TYPE,
+            "type": "larona-epict-panel",
             "options": {
-                "autoScale": self.autoScale,
-                "bgURL": self.bgURL,
+                "autoScale": self.auto_scale,
+                "bgURL": self.bg_url,
                 "boxes": [box.to_json_data() for box in self.boxes],
             },
         }
@@ -1728,14 +1539,6 @@ class ePict(Panel):
 
 
 class RowPanel(Panel):
-    """
-    Generates Row panel json structure.
-
-    :param title: Title of the panel.
-    :param collapsed: Whether the row is collapsed.
-    :param panels: list of panels in the row.
-    """
-
     panels: list[Any] = []
     collapsed: bool = False
 
@@ -1750,19 +1553,17 @@ class RowPanel(Panel):
             {
                 "collapsed": self.collapsed,
                 "panels": [p.to_json_data() for p in self.panels],
-                "type": ROW_TYPE,
-            },
+                "type": "row",
+            }
         )
 
 
 class Row(BaseModel):
-    """Legacy support for old row, when not used with gridPos."""
-
     panels: list[Any] = []
     collapse: bool = False
     editable: bool = True
-    height: Pixels = DEFAULT_ROW_HEIGHT
-    showTitle: Any | None = None
+    height: Pixels = Pixels(250)
+    show_title: Any | None = Field(default=None, alias="showTitle")
     title: Any | None = None
     repeat: Any | None = None
 
@@ -1774,96 +1575,89 @@ class Row(BaseModel):
         return self.copy(update={"panels": new_panels})
 
     def to_json_data(self) -> dict:
-        showTitle_val = False
+        show_title_val = False
         title_val = "New row"
         if self.title is not None:
-            showTitle_val = True
+            show_title_val = True
             title_val = self.title
-        if self.showTitle is not None:
-            showTitle_val = self.showTitle
+        if self.show_title is not None:
+            show_title_val = self.show_title
         return {
             "collapse": self.collapse,
             "editable": self.editable,
             "height": self.height.to_json_data(),
             "panels": [p.to_json_data() for p in self.panels],
-            "showTitle": showTitle_val,
+            "showTitle": show_title_val,
             "title": title_val,
             "repeat": self.repeat,
         }
 
 
 class Graph(Panel):
-    """Generates Graph panel json structure."""
-
     alert: Any | None = None
-    alertThreshold: bool = True
-    aliasColors: dict[Any, Any] = {}
+    alert_threshold: bool = Field(default=True, alias="alertThreshold")
+    alias_colors: dict[Any, Any] = Field({}, alias="aliasColors")
     align: bool = False
-    alignLevel: int = 0
+    align_level: int = Field(default=0, alias="alignLevel")
     bars: bool = False
-    dataLinks: list[Any] = []
-    error: bool = False
-    fill: int = 1
-    fillGradient: int = 0
+    data_links: list[Any] = Field([], alias="dataLinks")
+    fill: int = Field(default=1)
+    fill_gradient: int = Field(default=0, alias="fillGradient")
     grid: Grid
-    isNew: bool = True
+    is_new: bool = Field(default=True, alias="isNew")
     legend: Legend
     lines: bool = True
-    lineWidth: Any = DEFAULT_LINE_WIDTH
-    nullPointMode: Any = NULL_CONNECTED
+    line_width: Any = Field(default=2, alias="lineWidth")
+    null_point_mode: Any = Field(default="connected", alias="nullPointMode")
     percentage: bool = False
-    pointRadius: Any = DEFAULT_POINT_RADIUS
+    point_radius: Any = Field(default=5, alias="pointRadius")
     points: bool = False
-    renderer: Any = DEFAULT_RENDERER
-    seriesOverrides: list[Any] = []
+    renderer: Any = Field(default="flot")
+    series_overrides: list[Any] = Field([], alias="seriesOverrides")
     stack: bool = False
-    steppedLine: bool = False
+    stepped_line: bool = Field(default=False, alias="steppedLine")
     tooltip: Tooltip
     thresholds: list[Any] = []
     unit: str = ""
-    xAxis: XAxis
-    yAxes: YAxes
+    x_axis: XAxis = Field(alias="xAxis")
+    y_axes: YAxes = Field(alias="yAxes")
 
     def to_json_data(self) -> dict:
-        graphObject = {
-            "aliasColors": self.aliasColors,
+        graph_object = {
+            "aliasColors": self.alias_colors,
             "bars": self.bars,
             "error": self.error,
-            "fieldConfig": {
-                "defaults": {"unit": self.unit},
-            },
+            "fieldConfig": {"defaults": {"unit": self.unit}},
             "fill": self.fill,
             "grid": self.grid.to_json_data(),
-            "isNew": self.isNew,
+            "isNew": self.is_new,
             "legend": self.legend.to_json_data(),
             "lines": self.lines,
-            "linewidth": self.lineWidth,
-            "minSpan": self.minSpan,
-            "nullPointMode": self.nullPointMode,
+            "linewidth": self.line_width,
+            "minSpan": self.min_span,
+            "nullPointMode": self.null_point_mode,
             "options": {
-                "dataLinks": self.dataLinks,
-                "alertThreshold": self.alertThreshold,
+                "dataLinks": self.data_links,
+                "alertThreshold": self.alert_threshold,
             },
             "percentage": self.percentage,
-            "pointradius": self.pointRadius,
+            "pointradius": self.point_radius,
             "points": self.points,
             "renderer": self.renderer,
-            "seriesOverrides": self.seriesOverrides,
+            "seriesOverrides": self.series_overrides,
             "stack": self.stack,
-            "steppedLine": self.steppedLine,
+            "steppedLine": self.stepped_line,
             "tooltip": self.tooltip.to_json_data(),
             "thresholds": self.thresholds,
-            "type": GRAPH_TYPE,
-            "xaxis": self.xAxis.to_json_data(),
-            "yaxes": self.yAxes.to_json_data(),
-            "yaxis": {"align": self.align, "alignLevel": self.alignLevel},
+            "type": "graph",
+            "xaxis": self.x_axis.to_json_data(),
+            "yaxes": self.y_axes.to_json_data(),
+            "yaxis": {"align": self.align, "alignLevel": self.align_level},
         }
         if self.alert:
-            graphObject["alert"] = self.alert
-            graphObject["thresholds"] = []
-        if self.thresholds and self.alert:
-            pass
-        return self.panel_json(graphObject)
+            graph_object["alert"] = self.alert
+            graph_object["thresholds"] = []
+        return self.panel_json(graph_object)
 
     def _iter_targets(self):
         yield from self.targets
@@ -1873,105 +1667,104 @@ class Graph(Panel):
         return self.copy(update={"targets": new_targets})
 
     def auto_ref_ids(self):
-        ref_ids = {t.refId for t in self._iter_targets() if t.refId}
+        ref_ids = {t.ref_id for t in self._iter_targets() if t.ref_id}
         double_candidate_refs = [
             p[0] + p[1] for p in itertools.product(string.ascii_uppercase, repeat=2)
         ]
         candidate_ref_ids = itertools.chain(
-            string.ascii_uppercase,
-            double_candidate_refs,
+            string.ascii_uppercase, double_candidate_refs
         )
         auto_ref_ids = (i for i in candidate_ref_ids if i not in ref_ids)
 
         def set_refid(t):
-            return t if t.refId else t.copy(update={"refId": next(auto_ref_ids)})
+            return t if t.ref_id else t.copy(update={"ref_id": next(auto_ref_ids)})
 
         return self._map_targets(set_refid)
 
 
 class TimeSeries(Panel):
-    """Generates Time Series panel json structure added in Grafana v8."""
-
-    axisPlacement: str = "auto"
-    axisLabel: str = ""
-    barAlignment: int = 0
-    colorMode: str = "palette-classic"
-    drawStyle: str = "line"
-    fillOpacity: int = 0
-    gradientMode: str = "none"
-    legendDisplayMode: str = "list"
-    legendPlacement: str = "bottom"
-    legendCalcs: list[str] = []
-    lineInterpolation: str = "linear"
-    lineWidth: int = 1
+    axis_placement: str = Field(default="auto", alias="axisPlacement")
+    axis_label: str = Field(default="", alias="axisLabel")
+    bar_alignment: int = Field(default=0, alias="barAlignment")
+    color_mode: str = Field(default="palette-classic", alias="colorMode")
+    draw_style: str = Field(default="line", alias="drawStyle")
+    fill_opacity: int = Field(default=0, alias="fillOpacity")
+    gradient_mode: str = Field(default="none", alias="gradientMode")
+    legend_display_mode: str = Field(default="list", alias="legendDisplayMode")
+    legend_placement: str = Field(default="bottom", alias="legendPlacement")
+    legend_calcs: list[str] = Field([], alias="legendCalcs")
+    line_interpolation: str = Field(default="linear", alias="lineInterpolation")
+    line_width: int = Field(default=1, alias="lineWidth")
     mappings: list[Any] = []
     overrides: list[Any] = []
-    pointSize: int = 5
-    scaleDistributionType: str = "linear"
-    scaleDistributionLog: int = 2
-    spanNulls: bool = False
-    showPoints: str = "auto"
-    stacking: dict[Any, Any] = {}
-    tooltipMode: str = "single"
-    tooltipSort: str = "none"
+    point_size: int = Field(default=5, alias="pointSize")
+    scale_distribution_type: str = Field(
+        default="linear", alias="scaleDistributionType"
+    )
+    scale_distribution_log: int = Field(default=2, alias="scaleDistributionLog")
+    span_nulls: bool = Field(default=False, alias="spanNulls")
+    show_points: str = Field(default="auto", alias="showPoints")
+    stacking: dict[str, Any] = {}
+    tooltip_mode: str = Field(default="single", alias="tooltipMode")
+    tooltip_sort: str = Field(default="none", alias="tooltipSort")
     unit: str = ""
-    thresholdsStyleMode: str = "off"
-    valueMin: int | None = None
-    valueMax: int | None = None
-    valueDecimals: int | None = None
-    axisSoftMin: int | None = None
-    axisSoftMax: int | None = None
+    thresholds_style_mode: str = Field(default="off", alias="thresholdsStyleMode")
+    value_min: int | None = Field(default=None, alias="valueMin")
+    value_max: int | None = Field(default=None, alias="valueMax")
+    value_decimals: int | None = Field(default=None, alias="valueDecimals")
+    axis_soft_min: int | None = Field(default=None, alias="axisSoftMin")
+    axis_soft_max: int | None = Field(default=None, alias="axisSoftMax")
 
     def to_json_data(self) -> dict:
         return self.panel_json(
             {
                 "fieldConfig": {
                     "defaults": {
-                        "color": {"mode": self.colorMode},
+                        "color": {"mode": self.color_mode},
                         "custom": {
-                            "axisPlacement": self.axisPlacement,
-                            "axisLabel": self.axisLabel,
-                            "drawStyle": self.drawStyle,
-                            "lineInterpolation": self.lineInterpolation,
-                            "barAlignment": self.barAlignment,
-                            "lineWidth": self.lineWidth,
-                            "fillOpacity": self.fillOpacity,
-                            "gradientMode": self.gradientMode,
-                            "spanNulls": self.spanNulls,
-                            "showPoints": self.showPoints,
-                            "pointSize": self.pointSize,
+                            "axisPlacement": self.axis_placement,
+                            "axisLabel": self.axis_label,
+                            "drawStyle": self.draw_style,
+                            "lineInterpolation": self.line_interpolation,
+                            "barAlignment": self.bar_alignment,
+                            "lineWidth": self.line_width,
+                            "fillOpacity": self.fill_opacity,
+                            "gradientMode": self.gradient_mode,
+                            "spanNulls": self.span_nulls,
+                            "showPoints": self.show_points,
+                            "pointSize": self.point_size,
                             "stacking": self.stacking,
                             "scaleDistribution": {
-                                "type": self.scaleDistributionType,
-                                "log": self.scaleDistributionLog,
+                                "type": self.scale_distribution_type,
+                                "log": self.scale_distribution_log,
                             },
                             "hideFrom": {
                                 "tooltip": False,
                                 "viz": False,
                                 "legend": False,
                             },
-                            "thresholdsStyle": {"mode": self.thresholdsStyleMode},
-                            "axisSoftMin": self.axisSoftMin,
-                            "axisSoftMax": self.axisSoftMax,
+                            "thresholdsStyle": {"mode": self.thresholds_style_mode},
+                            "axisSoftMin": self.axis_soft_min,
+                            "axisSoftMax": self.axis_soft_max,
                         },
                         "mappings": self.mappings,
-                        "min": self.valueMin,
-                        "max": self.valueMax,
-                        "decimals": self.valueDecimals,
+                        "min": self.value_min,
+                        "max": self.value_max,
+                        "decimals": self.value_decimals,
                         "unit": self.unit,
                     },
                     "overrides": self.overrides,
                 },
                 "options": {
                     "legend": {
-                        "displayMode": self.legendDisplayMode,
-                        "placement": self.legendPlacement,
-                        "calcs": self.legendCalcs,
+                        "displayMode": self.legend_display_mode,
+                        "placement": self.legend_placement,
+                        "calcs": self.legend_calcs,
                     },
-                    "tooltip": {"mode": self.tooltipMode, "sort": self.tooltipSort},
+                    "tooltip": {"mode": self.tooltip_mode, "sort": self.tooltip_sort},
                 },
-                "type": TIMESERIES_TYPE,
-            },
+                "type": "timeseries",
+            }
         )
 
 
@@ -1981,8 +1774,6 @@ class TimeSeries(Panel):
 
 
 class ValueMap(BaseModel):
-    """Generates JSON structure for a value mapping item."""
-
     text: Any
     value: Any
     op: str = "="
@@ -1992,34 +1783,34 @@ class ValueMap(BaseModel):
 
 
 class SparkLine(BaseModel):
-    fillColor: RGBA = BLUE_RGBA
+    fill_color: RGBA = Field(default=Color((31, 118, 189, 0.18)), alias="fillColor")
     full: bool = False
-    lineColor: RGB = BLUE_RGB
+    line_color: RGB = Field(default=Color((31, 120, 193)), alias="lineColor")
     show: bool = False
 
     def to_json_data(self) -> dict:
         return {
-            "fillColor": self.fillColor.to_json_data(),
+            "fillColor": self.fill_color.to_json_data(),
             "full": self.full,
-            "lineColor": self.lineColor.to_json_data(),
+            "lineColor": self.line_color.to_json_data(),
             "show": self.show,
         }
 
 
 class Gauge(BaseModel):
-    minValue: int = 0
-    maxValue: int = 100
+    min_value: int = Field(default=0, alias="minValue")
+    max_value: int = Field(default=100, alias="maxValue")
     show: bool = False
-    thresholdLabels: bool = False
-    thresholdMarkers: bool = True
+    threshold_labels: bool = Field(default=False, alias="thresholdLabels")
+    threshold_markers: bool = Field(default=True, alias="thresholdMarkers")
 
     def to_json_data(self) -> dict:
         return {
-            "maxValue": self.maxValue,
-            "minValue": self.minValue,
+            "maxValue": self.max_value,
+            "minValue": self.min_value,
             "show": self.show,
-            "thresholdLabels": self.thresholdLabels,
-            "thresholdMarkers": self.thresholdMarkers,
+            "thresholdLabels": self.threshold_labels,
+            "thresholdMarkers": self.threshold_markers,
         }
 
 
@@ -2033,10 +1824,8 @@ class RangeMap(BaseModel):
 
 
 class DiscreteColorMappingItem(BaseModel):
-    """Generates JSON structure for a value mapping item for discrete panels."""
-
     text: str
-    color: Any = GREY1
+    color: Any = Field(default=Color((216, 200, 27, 0.27)))
 
     def to_json_data(self) -> dict:
         return {
@@ -2048,79 +1837,76 @@ class DiscreteColorMappingItem(BaseModel):
 
 
 class Discrete(Panel):
-    """
-    Generates Discrete panel JSON structure.
-    https://grafana.com/grafana/plugins/natel-discrete-panel/.
-    """
-
-    backgroundColor: RGBA = Color((128, 128, 128, 0.1))
-    lineColor: RGBA = Color((0, 0, 0, 0.1))
-    metricNameColor: Any = "#000000"
-    timeTextColor: Any = "#d8d9da"
-    valueTextColor: Any = "#000000"
+    background_color: RGBA = Field(
+        default=Color((128, 128, 128, 0.1)), alias="backgroundColor"
+    )
+    line_color: RGBA = Field(default=Color((0, 0, 0, 0.1)), alias="lineColor")
+    metric_name_color: Any = Field(default="#000000", alias="metricNameColor")
+    time_text_color: Any = Field(default="#d8d9da", alias="timeTextColor")
+    value_text_color: Any = Field(default="#000000", alias="valueTextColor")
     decimals: int = 0
-    legendPercentDecimals: int = 0
-    rowHeight: int = 50
-    textSize: int = 24
-    textSizeTime: int = 12
+    legend_percent_decimals: int = Field(default=0, alias="legendPercentDecimals")
+    row_height: int = Field(default=50, alias="rowHeight")
+    text_size: int = Field(default=24, alias="textSize")
+    text_size_time: int = Field(default=12, alias="textSizeTime")
     units: str = "none"
-    legendSortBy: str = "-ms"
-    highlightOnMouseover: bool = True
-    showLegend: bool = True
-    showLegendPercent: bool = True
-    showLegendNames: bool = True
-    showLegendValues: bool = True
-    showTimeAxis: bool = True
-    use12HourClock: bool = False
-    writeMetricNames: bool = False
-    writeLastValue: bool = True
-    writeAllValues: bool = False
-    showDistinctCount: Any | None = None
-    showLegendCounts: Any | None = None
-    showLegendTime: Any | None = None
-    showTransitionCount: Any | None = None
-    colorMaps: list[DiscreteColorMappingItem] = []
-    rangeMaps: list[RangeMap] = []
-    valueMaps: list[ValueMap] = []
+    legend_sort_by: str = Field(default="-ms", alias="legendSortBy")
+    highlight_on_mouseover: bool = Field(default=True, alias="highlightOnMouseover")
+    show_legend: bool = Field(default=True, alias="showLegend")
+    show_legend_percent: bool = Field(default=True, alias="showLegendPercent")
+    show_legend_names: bool = Field(default=True, alias="showLegendNames")
+    show_legend_values: bool = Field(default=True, alias="showLegendValues")
+    show_time_axis: bool = Field(default=True, alias="showTimeAxis")
+    use_12_hour_clock: bool = Field(default=False, alias="use12HourClock")
+    write_metric_names: bool = Field(default=False, alias="writeMetricNames")
+    write_last_value: bool = Field(default=True, alias="writeLastValue")
+    write_all_values: bool = Field(default=False, alias="writeAllValues")
+    show_distinct_count: Any | None = Field(default=None, alias="showDistinctCount")
+    show_legend_counts: Any | None = Field(default=None, alias="showLegendCounts")
+    show_legend_time: Any | None = Field(default=None, alias="showLegendTime")
+    show_transition_count: Any | None = Field(default=None, alias="showTransitionCount")
+    color_maps: list[DiscreteColorMappingItem] = Field([], alias="colorMaps")
+    range_maps: list[RangeMap] = Field([], alias="rangeMaps")
+    value_maps: list[ValueMap] = Field([], alias="valueMaps")
 
     def to_json_data(self) -> dict:
-        graphObject = {
-            "type": DISCRETE_TYPE,
-            "backgroundColor": self.backgroundColor.to_json_data()
-            if hasattr(self.backgroundColor, "to_json_data")
-            else self.backgroundColor,
-            "lineColor": self.lineColor.to_json_data()
-            if hasattr(self.lineColor, "to_json_data")
-            else self.lineColor,
-            "metricNameColor": self.metricNameColor,
-            "timeTextColor": self.timeTextColor,
-            "valueTextColor": self.valueTextColor,
-            "legendPercentDecimals": self.legendPercentDecimals,
+        graph_object = {
+            "type": "natel-discrete-panel",
+            "backgroundColor": self.background_color.to_json_data()
+            if hasattr(self.background_color, "to_json_data")
+            else self.background_color,
+            "lineColor": self.line_color.to_json_data()
+            if hasattr(self.line_color, "to_json_data")
+            else self.line_color,
+            "metricNameColor": self.metric_name_color,
+            "timeTextColor": self.time_text_color,
+            "valueTextColor": self.value_text_color,
+            "legendPercentDecimals": self.legend_percent_decimals,
             "decimals": self.decimals,
-            "rowHeight": self.rowHeight,
-            "textSize": self.textSize,
-            "textSizeTime": self.textSizeTime,
+            "rowHeight": self.row_height,
+            "textSize": self.text_size,
+            "textSizeTime": self.text_size_time,
             "units": self.units,
-            "legendSortBy": self.legendSortBy,
-            "highlightOnMouseover": self.highlightOnMouseover,
-            "showLegend": self.showLegend,
-            "showLegendPercent": self.showLegendPercent,
-            "showLegendNames": self.showLegendNames,
-            "showLegendValues": self.showLegendValues,
-            "showTimeAxis": self.showTimeAxis,
-            "use12HourClock": self.use12HourClock,
-            "writeMetricNames": self.writeMetricNames,
-            "writeLastValue": self.writeLastValue,
-            "writeAllValues": self.writeAllValues,
-            "showDistinctCount": self.showDistinctCount,
-            "showLegendCounts": self.showLegendCounts,
-            "showLegendTime": self.showLegendTime,
-            "showTransitionCount": self.showTransitionCount,
-            "colorMaps": [cm.to_json_data() for cm in self.colorMaps],
-            "rangeMaps": [rm.to_json_data() for rm in self.rangeMaps],
-            "valueMaps": [vm.to_json_data() for vm in self.valueMaps],
+            "legendSortBy": self.legend_sort_by,
+            "highlightOnMouseover": self.highlight_on_mouseover,
+            "showLegend": self.show_legend,
+            "showLegendPercent": self.show_legend_percent,
+            "showLegendNames": self.show_legend_names,
+            "showLegendValues": self.show_legend_values,
+            "showTimeAxis": self.show_time_axis,
+            "use12HourClock": self.use_12_hour_clock,
+            "writeMetricNames": self.write_metric_names,
+            "writeLastValue": self.write_last_value,
+            "writeAllValues": self.write_all_values,
+            "showDistinctCount": self.show_distinct_count,
+            "showLegendCounts": self.show_legend_counts,
+            "showLegendTime": self.show_legend_time,
+            "showTransitionCount": self.show_transition_count,
+            "colorMaps": [cm.to_json_data() for cm in self.color_maps],
+            "rangeMaps": [rm.to_json_data() for rm in self.range_maps],
+            "valueMaps": [vm.to_json_data() for vm in self.value_maps],
         }
-        return self.panel_json(graphObject)
+        return self.panel_json(graph_object)
 
 
 # ---------------------------------------------------------------------------
@@ -2129,8 +1915,6 @@ class Discrete(Panel):
 
 
 class Text(Panel):
-    """Generates a Text panel."""
-
     content: str = ""
     error: bool = False
     mode: Literal["markdown", "text", "html"] = "markdown"
@@ -2138,69 +1922,65 @@ class Text(Panel):
     def to_json_data(self) -> dict:
         return self.panel_json(
             {
-                "type": TEXT_TYPE,
+                "type": "text",
                 "error": self.error,
                 "options": {"content": self.content, "mode": self.mode},
-            },
+            }
         )
 
 
 class Alertlist(BaseModel):
-    """Generates the Alertlist Panel."""
-
-    dashboardTags: list[str] = []
+    dashboard_tags: list[str] = Field([], alias="dashboardTags")
     description: str = ""
-    gridPos: GridPos | None = None
+    grid_pos: GridPos | None = Field(default=None, alias="gridPos")
     id: Any | None = None
-    limit: int = DEFAULT_LIMIT
+    limit: int = 10
     links: list[Any] = []
-    nameFilter: str = ""
-    onlyAlertsOnDashboard: bool = True
-    show: Any = ALERTLIST_SHOW_CURRENT
-    sortOrder: int = SORT_ASC
+    name_filter: str = Field(default="", alias="nameFilter")
+    only_alerts_on_dashboard: bool = Field(default=True, alias="onlyAlertsOnDashboard")
+    show: Any = "current"
+    sort_order: int = Field(default=1, alias="sortOrder")
     span: int = 6
-    stateFilter: list[Any] = []
+    state_filter: list[Any] = Field([], alias="stateFilter")
     title: str = ""
     transparent: bool = False
-    alertName: str = ""
+    alert_name: str = Field(default="", alias="alertName")
 
     def to_json_data(self) -> dict:
         return {
-            "dashboardTags": self.dashboardTags,
+            "dashboardTags": self.dashboard_tags,
             "description": self.description,
-            "gridPos": self.gridPos.to_json_data() if self.gridPos else None,
+            "gridPos": self.grid_pos.to_json_data() if self.grid_pos else None,
             "id": self.id,
             "limit": self.limit,
             "links": self.links,
-            "nameFilter": self.nameFilter,
-            "onlyAlertsOnDashboard": self.onlyAlertsOnDashboard,
+            "nameFilter": self.name_filter,
+            "onlyAlertsOnDashboard": self.only_alerts_on_dashboard,
             "show": self.show,
-            "sortOrder": self.sortOrder,
+            "sortOrder": self.sort_order,
             "span": self.span,
-            "stateFilter": self.stateFilter,
+            "stateFilter": self.state_filter,
             "title": self.title,
             "transparent": self.transparent,
-            "type": ALERTLIST_TYPE,
-            "options": {"alertName": self.alertName},
+            "type": "alertlist",
+            "options": {"alertName": self.alert_name},
         }
 
 
 class Stat(Panel):
-    """Generates Stat panel json structure."""
-
     alignment: str = "auto"
     color: Any | None = None
-    colorMode: str = "value"
+    color_mode: str = Field(default="value", alias="colorMode")
     decimals: Any | None = None
     format: str = "none"
-    graphMode: str = "area"
+    graph_mode: str = Field(default="area", alias="graphMode")
     mappings: list[Any] = []
-    noValue: str = "none"
+    no_value: str = Field(default="none", alias="noValue")
     orientation: str = "auto"
     overrides: list[Any] = []
-    reduceCalc: str = "mean"
+    reduce_calc: str = Field(default="mean", alias="reduceCalc")
     fields: str = ""
-    textMode: str = "auto"
+    text_mode: str = Field(default="auto", alias="textMode")
     thresholds: str = ""
 
     def to_json_data(self) -> dict:
@@ -2213,38 +1993,36 @@ class Stat(Panel):
                         "decimals": self.decimals,
                         "mappings": self.mappings,
                         "unit": self.format,
-                        "noValue": self.noValue,
+                        "noValue": self.no_value,
                     },
                     "overrides": self.overrides,
                 },
                 "options": {
-                    "textMode": self.textMode,
-                    "colorMode": self.colorMode,
-                    "graphMode": self.graphMode,
+                    "textMode": self.text_mode,
+                    "colorMode": self.color_mode,
+                    "graphMode": self.graph_mode,
                     "justifyMode": self.alignment,
                     "orientation": self.orientation,
                     "reduceOptions": {
-                        "calcs": [self.reduceCalc],
+                        "calcs": [self.reduce_calc],
                         "fields": self.fields,
                         "values": False,
                     },
                 },
-                "type": STAT_TYPE,
-            },
+                "type": "stat",
+            }
         )
 
 
 class StatValueMappingItem(BaseModel):
-    """Generates JSON structure for a value mapping item for Stat panels."""
-
     text: Any
-    mapValue: str = ""
+    map_value: str = Field(default="", alias="mapValue")
     color: str = ""
     index: Any | None = None
 
     def to_json_data(self) -> dict:
         return {
-            self.mapValue: {
+            self.map_value: {
                 "text": self.text,
                 "color": self.color,
                 "index": self.index,
@@ -2253,26 +2031,22 @@ class StatValueMappingItem(BaseModel):
 
 
 class StatValueMappings(BaseModel):
-    """Generates JSON structure for the value mappings for the Stat panel."""
-
-    mappingItems: list[StatValueMappingItem] = []
+    mapping_items: list[StatValueMappingItem] = Field([], alias="mappingItems")
 
     def __init__(self, *mappings: StatValueMappingItem) -> None:
-        super().__init__(mappingItems=list(mappings))
+        super().__init__(mapping_items=list(mappings))
 
     def to_json_data(self) -> dict:
         ret_dict = {"type": "value", "options": {}}
-        for item in self.mappingItems:
+        for item in self.mapping_items:
             ret_dict["options"].update(item.to_json_data())
         return ret_dict
 
 
 class StatRangeMappings(BaseModel):
-    """Generates JSON structure for the range mappings for the Stat panel."""
-
     text: Any
-    startValue: int = 0
-    endValue: int = 0
+    start_value: int = Field(default=0, alias="startValue")
+    end_value: int = Field(default=0, alias="endValue")
     color: str = ""
     index: Any | None = None
 
@@ -2280,126 +2054,125 @@ class StatRangeMappings(BaseModel):
         return {
             "type": "range",
             "options": {
-                "from": self.startValue,
-                "to": self.endValue,
+                "from": self.start_value,
+                "to": self.end_value,
                 "result": {"text": self.text, "color": self.color, "index": self.index},
             },
         }
 
 
 class StatMapping(BaseModel):
-    """Deprecated Grafana v8: Generates JSON for value mapping."""
-
     text: Any
-    mapValue: str = ""
-    startValue: str = ""
-    endValue: str = ""
+    map_value: str = Field(default="", alias="mapValue")
+    start_value: str = Field(default="", alias="startValue")
+    end_value: str = Field(default="", alias="endValue")
     id: Any | None = None
 
     def to_json_data(self) -> dict:
-        mappingType = (
-            MAPPING_TYPE_VALUE_TO_TEXT if self.mapValue else MAPPING_TYPE_RANGE_TO_TEXT
+        mapping_type = (
+            1
+            if self.map_value
+            else 2  # MAPPING_TYPE_VALUE_TO_TEXT if value else MAPPING_TYPE_RANGE_TO_TEXT
         )
         return {
             "operator": "",
             "text": self.text,
-            "type": mappingType,
-            "value": self.mapValue,
-            "from": self.startValue,
-            "to": self.endValue,
+            "type": mapping_type,
+            "value": self.map_value,
+            "from": self.start_value,
+            "to": self.end_value,
             "id": self.id,
         }
 
 
 class StatValueMapping(BaseModel):
-    """Deprecated Grafana v8: Generates JSON for stat value mapping."""
-
     text: Any
-    mapValue: str = ""
+    map_value: str = Field(default="", alias="mapValue")
     id: Any | None = None
 
     def to_json_data(self) -> dict:
         return StatMapping(
             text=self.text,
-            mapValue=self.mapValue,
+            map_value=self.map_value,
             id=self.id,
         ).to_json_data()
 
 
 class StatRangeMapping(BaseModel):
-    """Deprecated Grafana v8: Generates JSON for stat range mapping."""
-
     text: Any
-    startValue: str = ""
-    endValue: str = ""
+    start_value: str = Field(default="", alias="startValue")
+    end_value: str = Field(default="", alias="endValue")
     id: Any | None = None
 
     def to_json_data(self) -> dict:
         return StatMapping(
             text=self.text,
-            startValue=self.startValue,
-            endValue=self.endValue,
+            start_value=self.start_value,
+            end_value=self.end_value,
             id=self.id,
         ).to_json_data()
 
 
 class SingleStat(Panel):
-    """
-    Generates Single Stat panel JSON structure.
-
-    (Deprecated in Grafana 7.0, please use Stat instead)
-    """
-
-    cacheTimeout: Any | None = None
-    colors: list[Any] = [GREEN, ORANGE, RED]
-    colorBackground: bool = False
-    colorValue: bool = False
+    cache_timeout: Any | None = Field(default=None, alias="cacheTimeout")
+    colors: list[Color] = [
+        Color((50, 172, 45, 0.97)),
+        Color((237, 129, 40, 0.89)),
+        Color((245, 54, 54, 0.9)),
+    ]
+    color_background: bool = Field(default=False, alias="colorBackground")
+    color_value: bool = Field(default=False, alias="colorValue")
     decimals: Any | None = None
     format: str = "none"
     gauge: Gauge
-    mappingType: int = MAPPING_TYPE_VALUE_TO_TEXT
-    mappingTypes: list[Any] = [MAPPING_VALUE_TO_TEXT, MAPPING_RANGE_TO_TEXT]
-    minSpan: Any | None = None
-    nullText: Any | None = None
-    nullPointMode: str = "connected"
+    mapping_type: int = Field(
+        default=1, alias="mappingType"
+    )  # MAPPING_TYPE_VALUE_TO_TEXT
+    mapping_types: list[Any] = [
+        {"name": "value to text", "value": 1},
+        {"name": "range to text", "value": 2},
+    ]
+    min_span: Any | None = Field(default=None, alias="minSpan")
+    null_text: Any | None = Field(default=None, alias="nullText")
+    null_point_mode: str = Field(default="connected", alias="nullPointMode")
     postfix: str = ""
-    postfixFontSize: str = "50%"
+    postfix_font_size: str = Field(default="50%", alias="postfixFontSize")
     prefix: str = ""
-    prefixFontSize: str = "50%"
-    rangeMaps: list[Any] = []
+    prefix_font_size: str = Field(default="50%", alias="prefixFontSize")
+    range_maps: list[Any] = Field([], alias="rangeMaps")
     sparkline: SparkLine
     thresholds: str = ""
-    valueFontSize: str = "80%"
-    valueName: str = VTYPE_DEFAULT
-    valueMaps: list[Any] = []
+    value_font_size: str = Field(default="80%", alias="valueFontSize")
+    value_name: str = Field(default="avg", alias="valueName")  # VTYPE_DEFAULT
+    value_maps: list[Any] = Field([], alias="valueMaps")
 
     def to_json_data(self) -> dict:
         return self.panel_json(
             {
-                "cacheTimeout": self.cacheTimeout,
-                "colorBackground": self.colorBackground,
-                "colorValue": self.colorValue,
+                "cacheTimeout": self.cache_timeout,
+                "colorBackground": self.color_background,
+                "colorValue": self.color_value,
                 "colors": self.colors,
                 "decimals": self.decimals,
                 "format": self.format,
                 "gauge": self.gauge.to_json_data(),
-                "mappingType": self.mappingType,
-                "mappingTypes": self.mappingTypes,
-                "minSpan": self.minSpan,
-                "nullPointMode": self.nullPointMode,
-                "nullText": self.nullText,
+                "mappingType": self.mapping_type,
+                "mappingTypes": self.mapping_types,
+                "minSpan": self.min_span,
+                "nullPointMode": self.null_point_mode,
+                "nullText": self.null_text,
                 "postfix": self.postfix,
-                "postfixFontSize": self.postfixFontSize,
+                "postfixFontSize": self.postfix_font_size,
                 "prefix": self.prefix,
-                "prefixFontSize": self.prefixFontSize,
-                "rangeMaps": self.rangeMaps,
+                "prefixFontSize": self.prefix_font_size,
+                "rangeMaps": self.range_maps,
                 "sparkline": self.sparkline.to_json_data(),
                 "thresholds": self.thresholds,
-                "type": SINGLESTAT_TYPE,
-                "valueFontSize": self.valueFontSize,
-                "valueMaps": self.valueMaps,
-                "valueName": self.valueName,
-            },
+                "type": "singlestat",
+                "valueFontSize": self.value_font_size,
+                "valueMaps": self.value_maps,
+                "valueName": self.value_name,
+            }
         )
 
 
@@ -2410,23 +2183,27 @@ class SingleStat(Panel):
 
 class DateColumnStyleType(BaseModel):
     TYPE: str = "date"
-    dateFormat: str = "YYYY-MM-DD HH:mm:ss"
+    date_format: str = Field(default="YYYY-MM-DD HH:mm:ss", alias="dateFormat")
 
     def to_json_data(self) -> dict:
-        return {"dateFormat": self.dateFormat, "type": self.TYPE}
+        return {"dateFormat": self.date_format, "type": self.TYPE}
 
 
 class NumberColumnStyleType(BaseModel):
     TYPE: str = "number"
-    colorMode: Any | None = None
-    colors: list[Any] = [GREEN, ORANGE, RED]
+    color_mode: Any | None = Field(default=None, alias="colorMode")
+    colors: list[Color] = [
+        Color((50, 172, 45, 0.97)),
+        Color((237, 129, 40, 0.89)),
+        Color((245, 54, 54, 0.9)),
+    ]
     thresholds: list[Any] = []
-    decimals: int = 2
-    unit: str = SHORT_FORMAT
+    decimals: int = Field(default=2)
+    unit: str = Field(default="short", alias="unit")
 
     def to_json_data(self) -> dict:
         return {
-            "colorMode": self.colorMode,
+            "colorMode": self.color_mode,
             "colors": self.colors,
             "decimals": self.decimals,
             "thresholds": self.thresholds,
@@ -2437,28 +2214,34 @@ class NumberColumnStyleType(BaseModel):
 
 class StringColumnStyleType(BaseModel):
     TYPE: str = "string"
-    decimals: int = 2
-    colorMode: Any | None = None
-    colors: list[Any] = [GREEN, ORANGE, RED]
+    decimals: int = Field(default=2)
+    color_mode: Any | None = Field(default=None, alias="colorMode")
+    colors: list[Color] = [
+        Color((50, 172, 45, 0.97)),
+        Color((237, 129, 40, 0.89)),
+        Color((245, 54, 54, 0.9)),
+    ]
     thresholds: list[Any] = []
-    preserveFormat: bool = False
+    preserve_format: bool = Field(default=False, alias="preserveFormat")
     sanitize: bool = False
-    unit: str = SHORT_FORMAT
-    mappingType: int = MAPPING_TYPE_VALUE_TO_TEXT
-    valueMaps: list[Any] = []
-    rangeMaps: list[Any] = []
+    unit: str = Field(default="short", alias="unit")
+    mapping_type: int = Field(
+        default=1, alias="mappingType"
+    )  # MAPPING_TYPE_VALUE_TO_TEXT
+    value_maps: list[Any] = Field([], alias="valueMaps")
+    range_maps: list[Any] = Field([], alias="rangeMaps")
 
     def to_json_data(self) -> dict:
         return {
             "decimals": self.decimals,
-            "colorMode": self.colorMode,
+            "colorMode": self.color_mode,
             "colors": self.colors,
             "thresholds": self.thresholds,
             "unit": self.unit,
-            "mappingType": self.mappingType,
-            "valueMaps": self.valueMaps,
-            "rangeMaps": self.rangeMaps,
-            "preserveFormat": self.preserveFormat,
+            "mappingType": self.mapping_type,
+            "valueMaps": self.value_maps,
+            "rangeMaps": self.range_maps,
+            "preserveFormat": self.preserve_format,
             "sanitize": self.sanitize,
             "type": self.TYPE,
         }
@@ -2476,10 +2259,15 @@ class ColumnStyle(BaseModel):
     pattern: str = ""
     align: Literal["auto", "left", "right", "center"] = "auto"
     link: bool = False
-    linkOpenInNewTab: bool = False
-    linkUrl: str = ""
-    linkTooltip: str = ""
-    type: NumberColumnStyleType
+    link_open_in_new_tab: bool = Field(default=False, alias="linkOpenInNewTab")
+    link_url: str = Field(default="", alias="linkUrl")
+    link_tooltip: str = Field(default="", alias="linkTooltip")
+    type: (
+        NumberColumnStyleType
+        | StringColumnStyleType
+        | DateColumnStyleType
+        | HiddenColumnStyleType
+    )
 
     def to_json_data(self) -> dict:
         data = {
@@ -2487,9 +2275,9 @@ class ColumnStyle(BaseModel):
             "pattern": self.pattern,
             "align": self.align,
             "link": self.link,
-            "linkTargetBlank": self.linkOpenInNewTab,
-            "linkUrl": self.linkUrl,
-            "linkTooltip": self.linkTooltip,
+            "linkTargetBlank": self.link_open_in_new_tab,
+            "linkUrl": self.link_url,
+            "linkTooltip": self.link_tooltip,
         }
         data.update(self.type.to_json_data())
         return data
@@ -2512,26 +2300,26 @@ class Column(BaseModel):
 
 
 class TableSortByField(BaseModel):
-    displayName: str = ""
+    display_name: str = Field(default="", alias="displayName")
     desc: bool = False
 
     def to_json_data(self) -> dict:
-        return {"displayName": self.displayName, "desc": self.desc}
+        return {"displayName": self.display_name, "desc": self.desc}
 
 
 class Table(Panel):
     align: str = "auto"
-    colorMode: str = "thresholds"
+    color_mode: str = Field(default="thresholds", alias="colorMode")
     columns: list[Any] = []
-    displayMode: str = "auto"
-    fontSize: str = "100%"
+    display_mode: str = Field(default="auto", alias="displayMode")
+    font_size: str = Field(default="100%", alias="fontSize")
     filterable: bool = False
     mappings: list[Any] = []
     overrides: list[Any] = []
-    showHeader: bool = True
+    show_header: bool = Field(default=True, alias="showHeader")
     span: int = 6
     unit: str = ""
-    sortBy: list[TableSortByField] = []
+    sort_by: list[TableSortByField] = Field([], alias="sortBy")
 
     @classmethod
     def with_styled_columns(cls, columns, styles=None, **kwargs) -> NoReturn:
@@ -2540,14 +2328,14 @@ class Table(Panel):
     def to_json_data(self) -> dict:
         return self.panel_json(
             {
-                "color": {"mode": self.colorMode},
+                "color": {"mode": self.color_mode},
                 "columns": list(self.columns),
-                "fontSize": self.fontSize,
+                "fontSize": self.font_size,
                 "fieldConfig": {
                     "defaults": {
                         "custom": {
                             "align": self.align,
-                            "displayMode": self.displayMode,
+                            "displayMode": self.display_mode,
                             "filterable": self.filterable,
                         },
                         "unit": self.unit,
@@ -2555,34 +2343,24 @@ class Table(Panel):
                     },
                     "overrides": self.overrides,
                 },
-                "hideTimeOverride": self.hideTimeOverride,
+                "hideTimeOverride": self.hide_time_override,
                 "mappings": self.mappings,
-                "minSpan": self.minSpan,
+                "minSpan": self.min_span,
                 "options": {
-                    "showHeader": self.showHeader,
-                    "sortBy": [s.to_json_data() for s in self.sortBy],
+                    "showHeader": self.show_header,
+                    "sortBy": [s.to_json_data() for s in self.sort_by],
                 },
-                "type": TABLE_TYPE,
-            },
+                "type": "table",
+            }
         )
 
 
 class Threshold(BaseModel):
-    """
-    Threshold for panels.
-
-    Example:
-        thresholds = [
-            Threshold(color='green', index=0, value=0.0),
-            Threshold(color='red', index=1, value=80.0)
-        ]
-    """
-
     color: Any
     index: int
     value: float
     line: bool = True
-    op: str = EVAL_GT
+    op: str = Field(default="gt", alias="op")  # EVAL_GT
     yaxis: str = "left"
 
     def to_json_data(self) -> dict:
@@ -2602,31 +2380,33 @@ class Threshold(BaseModel):
 
 
 class BarGauge(Panel):
-    allValues: bool = False
-    calc: Any = GAUGE_CALC_MEAN
-    dataLinks: list[Any] = []
+    all_values: bool = Field(default=False, alias="allValues")
+    calc: Any = Field(default="mean", alias="calc")
+    data_links: list[Any] = Field([], alias="dataLinks")
     decimals: Any | None = None
-    displayMode: Literal["lcd", "basic", "gradient"] = "basic"
+    display_mode: Literal["lcd", "basic", "gradient"] = Field(
+        default="basic", alias="displayMode"
+    )
     format: str = "none"
     label: Any | None = None
     limit: Any | None = None
     max: int = 100
     min: int = 0
     orientation: Literal["horizontal", "vertical", "auto"] = "auto"
-    rangeMaps: list[Any] = []
-    thresholdLabels: bool = False
-    thresholdMarkers: bool = True
+    range_maps: list[Any] = Field([], alias="rangeMaps")
+    threshold_labels: bool = Field(default=False, alias="thresholdLabels")
+    threshold_markers: bool = Field(default=True, alias="thresholdMarkers")
     thresholds: list[Threshold] = [
         Threshold(color="green", index=0, value=0.0),
         Threshold(color="red", index=1, value=80.0),
     ]
-    valueMaps: list[Any] = []
+    value_maps: list[Any] = Field([], alias="valueMaps")
 
     def to_json_data(self) -> dict:
         return self.panel_json(
             {
                 "options": {
-                    "displayMode": self.displayMode,
+                    "displayMode": self.display_mode,
                     "fieldOptions": {
                         "calcs": [self.calc],
                         "defaults": {
@@ -2635,41 +2415,41 @@ class BarGauge(Panel):
                             "min": self.min,
                             "title": self.label,
                             "unit": self.format,
-                            "links": self.dataLinks,
+                            "links": self.data_links,
                         },
                         "limit": self.limit,
-                        "mappings": self.valueMaps,
+                        "mappings": self.value_maps,
                         "override": {},
                         "thresholds": self.thresholds,
-                        "values": self.allValues,
+                        "values": self.all_values,
                     },
                     "orientation": self.orientation,
-                    "showThresholdLabels": self.thresholdLabels,
-                    "showThresholdMarkers": self.thresholdMarkers,
+                    "showThresholdLabels": self.threshold_labels,
+                    "showThresholdMarkers": self.threshold_markers,
                 },
-                "type": BARGAUGE_TYPE,
-            },
+                "type": "bargauge",
+            }
         )
 
 
 class GaugePanel(Panel):
-    allValues: bool = False
-    calc: Any = GAUGE_CALC_MEAN
-    dataLinks: list[Any] = []
+    all_values: bool = Field(default=False, alias="allValues")
+    calc: Any = Field(default="mean", alias="calc")
+    data_links: list[Any] = Field([], alias="dataLinks")
     decimals: Any | None = None
     format: str = "none"
     label: Any | None = None
     limit: Any | None = None
     max: int = 100
     min: int = 0
-    rangeMaps: list[Any] = []
-    thresholdLabels: bool = False
-    thresholdMarkers: bool = True
+    range_maps: list[Any] = Field([], alias="rangeMaps")
+    threshold_labels: bool = Field(default=False, alias="thresholdLabels")
+    threshold_markers: bool = Field(default=True, alias="thresholdMarkers")
     thresholds: list[Threshold] = [
         Threshold(color="green", index=0, value=0.0),
         Threshold(color="red", index=1, value=80.0),
     ]
-    valueMaps: list[Any] = []
+    value_maps: list[Any] = Field([], alias="valueMaps")
     neutral: Any | None = None
 
     def to_json_data(self) -> dict:
@@ -2683,18 +2463,18 @@ class GaugePanel(Panel):
                         "min": self.min,
                         "title": self.label,
                         "unit": self.format,
-                        "links": self.dataLinks,
+                        "links": self.data_links,
                         "limit": self.limit,
-                        "mappings": self.valueMaps,
+                        "mappings": self.value_maps,
                         "override": {},
-                        "values": self.allValues,
+                        "values": self.all_values,
                         "custom": {"neutral": self.neutral},
                     },
-                    "showThresholdLabels": self.thresholdLabels,
-                    "showThresholdMarkers": self.thresholdMarkers,
+                    "showThresholdLabels": self.threshold_labels,
+                    "showThresholdMarkers": self.threshold_markers,
                 },
-                "type": GAUGE_TYPE,
-            },
+                "type": "gauge",
+            }
         )
 
 
@@ -2704,11 +2484,9 @@ class GaugePanel(Panel):
 
 
 class HeatmapColor(BaseModel):
-    """A Color object for heatmaps."""
-
-    cardColor: str = "#b4ff00"
-    colorScale: str = "sqrt"
-    colorScheme: str = "interpolateOranges"
+    card_color: str = Field(default="#b4ff00", alias="cardColor")
+    color_scale: str = Field(default="sqrt", alias="colorScale")
+    color_scheme: str = Field(default="interpolateOranges", alias="colorScheme")
     exponent: float = 0.5
     mode: str = "spectrum"
     max: Any | None = None
@@ -2717,65 +2495,63 @@ class HeatmapColor(BaseModel):
     def to_json_data(self) -> dict:
         return {
             "mode": self.mode,
-            "cardColor": self.cardColor,
-            "colorScale": self.colorScale,
+            "cardColor": self.card_color,
+            "colorScale": self.color_scale,
             "exponent": self.exponent,
-            "colorScheme": self.colorScheme,
+            "colorScheme": self.color_scheme,
             "max": self.max,
             "min": self.min,
         }
 
 
 class Heatmap(Panel):
-    legend: dict[Any, Any] = {"show": False}
+    legend: dict[str, Any] = {"show": False}
     tooltip: Tooltip
-    cards: dict[Any, Any] = {"cardPadding": None, "cardRound": None}
+    cards: dict[str, Any] = {"cardPadding": None, "cardRound": None}
     color: HeatmapColor
-    dataFormat: str = "timeseries"
-    heatmap: dict[Any, Any] = {}
-    hideZeroBuckets: bool = False
-    highlightCards: bool = True
+    data_format: str = Field(default="timeseries", alias="dataFormat")
+    heatmap: dict[str, Any] = {}
+    hide_zero_buckets: bool = Field(default=False, alias="hideZeroBuckets")
+    highlight_cards: bool = Field(default=True, alias="highlightCards")
     options: list[Any] = []
-    xAxis: XAxis
-    xBucketNumber: Any | None = None
-    xBucketSize: Any | None = None
-    yAxis: YAxis
-    yBucketBound: Any | None = None
-    yBucketNumber: Any | None = None
-    yBucketSize: Any | None = None
-    reverseYBuckets: bool = False
+    x_axis: XAxis = Field(alias="xAxis")
+    x_bucket_number: Any | None = Field(default=None, alias="xBucketNumber")
+    x_bucket_size: Any | None = Field(default=None, alias="xBucketSize")
+    y_axis: YAxis = Field(alias="yAxis")
+    y_bucket_bound: Any | None = Field(default=None, alias="yBucketBound")
+    y_bucket_number: Any | None = Field(default=None, alias="yBucketNumber")
+    y_bucket_size: Any | None = Field(default=None, alias="yBucketSize")
+    reverse_y_buckets: bool = Field(default=False, alias="reverseYBuckets")
 
     def to_json_data(self) -> dict:
         return self.panel_json(
             {
                 "cards": self.cards,
                 "color": self.color.to_json_data(),
-                "dataFormat": self.dataFormat,
+                "dataFormat": self.data_format,
                 "heatmap": self.heatmap,
-                "hideZeroBuckets": self.hideZeroBuckets,
-                "highlightCards": self.highlightCards,
+                "hideZeroBuckets": self.hide_zero_buckets,
+                "highlightCards": self.highlight_cards,
                 "legend": self.legend,
                 "options": self.options,
-                "reverseYBuckets": self.reverseYBuckets,
+                "reverseYBuckets": self.reverse_y_buckets,
                 "tooltip": self.tooltip.to_json_data(),
-                "type": HEATMAP_TYPE,
-                "xAxis": self.xAxis.to_json_data(),
-                "xBucketNumber": self.xBucketNumber,
-                "xBucketSize": self.xBucketSize,
-                "yAxis": self.yAxis.to_json_data(),
-                "yBucketBound": self.yBucketBound,
-                "yBucketNumber": self.yBucketNumber,
-                "yBucketSize": self.yBucketSize,
-            },
+                "type": "heatmap",
+                "xAxis": self.x_axis.to_json_data(),
+                "xBucketNumber": self.x_bucket_number,
+                "xBucketSize": self.x_bucket_size,
+                "yAxis": self.y_axis.to_json_data(),
+                "yBucketBound": self.y_bucket_bound,
+                "yBucketNumber": self.y_bucket_number,
+                "yBucketSize": self.y_bucket_size,
+            }
         )
 
 
 class StatusmapColor(BaseModel):
-    """A Color object for Statusmaps."""
-
-    cardColor: str = "#b4ff00"
-    colorScale: str = "sqrt"
-    colorScheme: str = "GnYlRd"
+    card_color: str = Field(default="#b4ff00", alias="cardColor")
+    color_scale: str = Field(default="sqrt", alias="colorScale")
+    color_scheme: str = Field(default="GnYlRd", alias="colorScheme")
     exponent: float = 0.5
     mode: str = "spectrum"
     thresholds: list[Any] = []
@@ -2785,10 +2561,10 @@ class StatusmapColor(BaseModel):
     def to_json_data(self) -> dict:
         return {
             "mode": self.mode,
-            "cardColor": self.cardColor,
-            "colorScale": self.colorScale,
+            "cardColor": self.card_color,
+            "colorScale": self.color_scale,
             "exponent": self.exponent,
-            "colorScheme": self.colorScheme,
+            "colorScheme": self.color_scheme,
             "max": self.max,
             "min": self.min,
             "thresholds": self.thresholds,
@@ -2797,43 +2573,43 @@ class StatusmapColor(BaseModel):
 
 class Statusmap(Panel):
     alert: Any | None = None
-    cards: dict[Any, Any] = {
+    cards: dict[str, Any] = {
         "cardRound": None,
         "cardMinWidth": 5,
         "cardHSpacing": 2,
         "cardVSpacing": 2,
     }
     color: StatusmapColor
-    isNew: bool = True
+    is_new: bool = Field(default=True, alias="isNew")
     legend: Legend
-    nullPointMode: Any = NULL_AS_ZERO
+    null_point_mode: Any = Field(default="null as zero", alias="nullPointMode")
     tooltip: Tooltip
-    xAxis: XAxis
-    yAxis: YAxis
+    x_axis: XAxis = Field(alias="xAxis")
+    y_axis: YAxis = Field(alias="yAxis")
 
     def to_json_data(self) -> dict:
-        graphObject = {
+        graph_object = {
             "color": self.color.to_json_data(),
-            "isNew": self.isNew,
+            "isNew": self.is_new,
             "legend": self.legend.to_json_data(),
-            "minSpan": self.minSpan,
-            "nullPointMode": self.nullPointMode,
+            "minSpan": self.min_span,
+            "nullPointMode": self.null_point_mode,
             "tooltip": self.tooltip.to_json_data(),
-            "type": STATUSMAP_TYPE,
-            "xaxis": self.xAxis.to_json_data(),
-            "yaxis": self.yAxis.to_json_data(),
+            "type": "flant-statusmap-panel",
+            "xaxis": self.x_axis.to_json_data(),
+            "yaxis": self.y_axis.to_json_data(),
         }
         if self.alert:
-            graphObject["alert"] = self.alert
-        return self.panel_json(graphObject)
+            graph_object["alert"] = self.alert
+        return self.panel_json(graph_object)
 
 
 class Svg(Panel):
     format: str = "none"
-    jsCodeFilePath: str = ""
-    jsCodeInitFilePath: str = ""
+    js_code_file_path: str = Field("", alias="jsCodeFilePath")
+    js_code_init_file_path: str = Field("", alias="jsCodeInitFilePath")
     height: Any | None = None
-    svgFilePath: str = ""
+    svg_file_path: str = Field("", alias="svgFilePath")
 
     @staticmethod
     def read_file(file_path: str) -> str:
@@ -2843,9 +2619,9 @@ class Svg(Panel):
         return ""
 
     def to_json_data(self) -> dict:
-        js_code = self.read_file(self.jsCodeFilePath)
-        js_init_code = self.read_file(self.jsCodeInitFilePath)
-        svg_data = self.read_file(self.svgFilePath)
+        js_code = self.read_file(self.js_code_file_path)
+        js_init_code = self.read_file(self.js_code_init_file_path)
+        svg_data = self.read_file(self.svg_file_path)
         return self.panel_json(
             {
                 "format": self.format,
@@ -2859,41 +2635,35 @@ class Svg(Panel):
 
 
 class PieChart(Panel):
-    """
-    Generates Pie Chart panel JSON structure.
-
-    Deprecated in Grafana 8.0; please use PieChartv2 instead.
-    """
-
-    aliasColors: dict[Any, Any] = {}
+    alias_colors: dict[Any, Any] = Field({}, alias="aliasColors")
     format: str = "none"
-    legendType: str = "Right side"
+    legend_type: str = Field("Right side", alias="legendType")
     overrides: list[Any] = []
-    pieType: str = "pie"
-    percentageDecimals: int = 0
-    showLegend: Any = True
-    showLegendValues: Any = True
-    showLegendPercentage: bool = False
+    pie_type: str = Field("pie", alias="pieType")
+    percentage_decimals: int = Field(0, alias="percentageDecimals")
+    show_legend: Any = Field(True, alias="showLegend")
+    show_legend_values: Any = Field(True, alias="showLegendValues")
+    show_legend_percentage: bool = Field(False, alias="showLegendPercentage")
     thresholds: str = ""
 
     def to_json_data(self) -> dict:
         return self.panel_json(
             {
-                "aliasColors": self.aliasColors,
+                "aliasColors": self.alias_colors,
                 "format": self.format,
-                "pieType": self.pieType,
+                "pieType": self.pie_type,
                 "height": self.height,
                 "fieldConfig": {
                     "defaults": {"custom": {}},
                     "overrides": self.overrides,
                 },
                 "legend": {
-                    "show": self.showLegend,
-                    "values": self.showLegendValues,
-                    "percentage": self.showLegendPercentage,
-                    "percentageDecimals": self.percentageDecimals,
+                    "show": self.show_legend,
+                    "values": self.show_legend_values,
+                    "percentage": self.show_legend_percentage,
+                    "percentageDecimals": self.percentage_decimals,
                 },
-                "legendType": self.legendType,
+                "legendType": self.legend_type,
                 "type": PIE_CHART_TYPE,
             },
         )
@@ -2901,18 +2671,18 @@ class PieChart(Panel):
 
 class PieChartv2(Panel):
     custom: dict[Any, Any] = {}
-    colorMode: str = "palette-classic"
-    legendDisplayMode: str = "list"
-    legendPlacement: str = "bottom"
-    legendValues: list[Any] = []
+    color_mode: str = Field("palette-classic", alias="colorMode")
+    legend_display_mode: str = Field("list", alias="legendDisplayMode")
+    legend_placement: str = Field("bottom", alias="legendPlacement")
+    legend_values: list[Any] = Field([], alias="legendValues")
     mappings: list[Any] = []
     overrides: list[Any] = []
-    pieType: str = "pie"
-    reduceOptionsCalcs: list[str] = ["lastNotNull"]
-    reduceOptionsFields: str = ""
-    reduceOptionsValues: bool = False
-    tooltipMode: str = "single"
-    tooltipSort: str = "none"
+    pie_type: str = Field("pie", alias="pieType")
+    reduce_options_calcs: list[str] = Field(["lastNotNull"], alias="reduceOptionsCalcs")
+    reduce_options_fields: str = Field("", alias="reduceOptionsFields")
+    reduce_options_values: bool = Field(False, alias="reduceOptionsValues")
+    tooltip_mode: str = Field("single", alias="tooltipMode")
+    tooltip_sort: str = Field("none", alias="tooltipSort")
     unit: str = ""
 
     def to_json_data(self) -> dict:
@@ -2920,7 +2690,7 @@ class PieChartv2(Panel):
             {
                 "fieldConfig": {
                     "defaults": {
-                        "color": {"mode": self.colorMode},
+                        "color": {"mode": self.color_mode},
                         "custom": self.custom,
                         "mappings": self.mappings,
                         "unit": self.unit,
@@ -2929,16 +2699,16 @@ class PieChartv2(Panel):
                 },
                 "options": {
                     "reduceOptions": {
-                        "values": self.reduceOptionsValues,
-                        "calcs": self.reduceOptionsCalcs,
-                        "fields": self.reduceOptionsFields,
+                        "values": self.reduce_options_values,
+                        "calcs": self.reduce_options_calcs,
+                        "fields": self.reduce_options_fields,
                     },
-                    "pieType": self.pieType,
-                    "tooltip": {"mode": self.tooltipMode, "sort": self.tooltipSort},
+                    "pieType": self.pie_type,
+                    "tooltip": {"mode": self.tooltip_mode, "sort": self.tooltip_sort},
                     "legend": {
-                        "displayMode": self.legendDisplayMode,
-                        "placement": self.legendPlacement,
-                        "values": self.legendValues,
+                        "displayMode": self.legend_display_mode,
+                        "placement": self.legend_placement,
+                        "values": self.legend_values,
                     },
                 },
                 "type": PIE_CHART_V2_TYPE,
@@ -2947,13 +2717,13 @@ class PieChartv2(Panel):
 
 
 class Dashboardlist(Panel):
-    showHeadings: bool = True
-    showSearch: bool = False
-    showRecent: bool = False
-    showStarred: bool = True
-    maxItems: int = 10
-    searchQuery: str = ""
-    searchTags: list[str] = []
+    show_headings: bool = Field(True, alias="showHeadings")
+    show_search: bool = Field(False, alias="showSearch")
+    show_recent: bool = Field(False, alias="showRecent")
+    show_starred: bool = Field(True, alias="showStarred")
+    max_items: int = Field(10, alias="maxItems")
+    search_query: str = Field("", alias="searchQuery")
+    search_tags: list[str] = Field([], alias="searchTags")
     overrides: list[Any] = []
 
     def to_json_data(self) -> dict:
@@ -2963,28 +2733,28 @@ class Dashboardlist(Panel):
                     "defaults": {"custom": {}},
                     "overrides": self.overrides,
                 },
-                "headings": self.showHeadings,
-                "search": self.showSearch,
-                "recent": self.showRecent,
-                "starred": self.showStarred,
-                "limit": self.maxItems,
-                "query": self.searchQuery,
-                "tags": self.searchTags,
+                "headings": self.show_headings,
+                "search": self.show_search,
+                "recent": self.show_recent,
+                "starred": self.show_starred,
+                "limit": self.max_items,
+                "query": self.search_query,
+                "tags": self.search_tags,
                 "type": DASHBOARDLIST_TYPE,
             },
         )
 
 
 class Logs(Panel):
-    showLabels: bool = False
-    showCommonLabels: bool = False
-    showTime: bool = False
-    wrapLogMessages: bool = False
-    sortOrder: str = "Descending"
-    dedupStrategy: str = "none"
-    enableLogDetails: bool = False
+    show_labels: bool = Field(False, alias="showLabels")
+    show_common_labels: bool = Field(False, alias="showCommonLabels")
+    show_time: bool = Field(False, alias="showTime")
+    wrap_log_messages: bool = Field(False, alias="wrapLogMessages")
+    sort_order: str = Field("Descending", alias="sortOrder")
+    dedup_strategy: str = Field("none", alias="dedupStrategy")
+    enable_log_details: bool = Field(False, alias="enableLogDetails")
     overrides: list[Any] = []
-    prettifyLogMessage: bool = False
+    prettify_log_message: bool = Field(False, alias="prettifyLogMessage")
 
     def to_json_data(self) -> dict:
         return self.panel_json(
@@ -2994,14 +2764,14 @@ class Logs(Panel):
                     "overrides": self.overrides,
                 },
                 "options": {
-                    "showLabels": self.showLabels,
-                    "showCommonLabels": self.showCommonLabels,
-                    "showTime": self.showTime,
-                    "wrapLogMessage": self.wrapLogMessages,
-                    "sortOrder": self.sortOrder,
-                    "dedupStrategy": self.dedupStrategy,
-                    "enableLogDetails": self.enableLogDetails,
-                    "prettifyLogMessage": self.prettifyLogMessage,
+                    "showLabels": self.show_labels,
+                    "showCommonLabels": self.show_common_labels,
+                    "showTime": self.show_time,
+                    "wrapLogMessage": self.wrap_log_messages,
+                    "sortOrder": self.sort_order,
+                    "dedupStrategy": self.dedup_strategy,
+                    "enableLogDetails": self.enable_log_details,
+                    "prettifyLogMessage": self.prettify_log_message,
                 },
                 "type": LOGS_TYPE,
             },
@@ -3017,26 +2787,26 @@ class GraphThreshold(BaseModel):
     """Threshold for Graph panels."""
 
     value: float
-    colorMode: str = "critical"
+    color_mode: str = Field("critical", alias="colorMode")
     fill: bool = True
     line: bool = True
     op: str = EVAL_GT
     yaxis: str = "left"
-    fillColor: Any = RED
-    lineColor: Any = RED
+    fill_color: Any = Field(RED, alias="fillColor")
+    line_color: Any = Field(RED, alias="lineColor")
 
     def to_json_data(self) -> dict:
         data = {
             "value": self.value,
-            "colorMode": self.colorMode,
+            "colorMode": self.color_mode,
             "fill": self.fill,
             "line": self.line,
             "op": self.op,
             "yaxis": self.yaxis,
         }
-        if self.colorMode == "custom":
-            data["fillColor"] = self.fillColor
-            data["lineColor"] = self.lineColor
+        if self.color_mode == "custom":
+            data["fillColor"] = self.fill_color
+            data["lineColor"] = self.line_color
         return data
 
 
@@ -3046,14 +2816,14 @@ class SeriesOverride(BaseModel):
     alias: str
     bars: bool = False
     lines: bool = True
-    yaxis: int = Field(1, ge=1, le=2)
-    fill: int = Field(1, ge=0, le=10)
-    zindex: int = Field(0, ge=-3, le=3)
+    yaxis: int = Field(1, ge=1, le=2, alias="yaxis")
+    fill: int = Field(1, ge=0, le=10, alias="fill")
+    zindex: int = Field(0, ge=-3, le=3, alias="zindex")
     dashes: bool = False
-    dashLength: int | None = Field(default=None)
-    spaceLength: int | None = Field(default=None)
+    dash_length: int | None = Field(default=None, alias="dashLength")
+    space_length: int | None = Field(default=None, alias="spaceLength")
     color: Any | None = None
-    fillBelowTo: str | None = None
+    fill_below_to: str | None = Field(default=None, alias="fillBelowTo")
 
     def to_json_data(self) -> dict:
         return {
@@ -3063,35 +2833,20 @@ class SeriesOverride(BaseModel):
             "yaxis": self.yaxis,
             "fill": self.fill,
             "color": self.color,
-            "fillBelowTo": self.fillBelowTo,
+            "fillBelowTo": self.fill_below_to,
             "zindex": self.zindex,
             "dashes": self.dashes,
-            "dashLength": self.dashLength,
-            "spaceLength": self.spaceLength,
+            "dashLength": self.dash_length,
+            "spaceLength": self.space_length,
         }
 
 
-# ---------------------------------------------------------------------------
-# Worldmap, StateTimeline, Histogram, News, Ae3ePlotly, BarChart
-# ---------------------------------------------------------------------------
-
-WORLDMAP_CENTER = [
-    "(0°, 0°)",
-    "North America",
-    "Europe",
-    "West Asia",
-    "SE Asia",
-    "Last GeoHash",
-    "custom",
-]
-
-
 class Worldmap(Panel):
-    circleMaxSize: int = 30
-    circleMinSize: int = 2
+    circle_max_size: int = Field(30, alias="circleMaxSize")
+    circle_min_size: int = Field(2, alias="circleMinSize")
     decimals: int = 0
-    geoPoint: str = "geohash"
-    locationData: Literal[
+    geo_point: str = Field("geohash", alias="geoPoint")
+    location_data: Literal[
         "countries",
         "countries_3letter",
         "states",
@@ -3101,14 +2856,14 @@ class Worldmap(Panel):
         "jsonp endpoint",
         "json result",
         "table",
-    ] = "countries"
-    locationName: str = ""
-    hideEmpty: bool = False
-    hideZero: bool = False
-    initialZoom: int = 1
-    jsonUrl: str = ""
-    jsonpCallback: str = ""
-    mapCenter: Literal[
+    ] = Field("countries", alias="locationData")
+    location_name: str = Field("", alias="locationName")
+    hide_empty: bool = Field(False, alias="hideEmpty")
+    hide_zero: bool = Field(False, alias="hideZero")
+    initial_zoom: int = Field(1, alias="initialZoom")
+    json_url: str = Field("", alias="jsonUrl")
+    jsonp_callback: str = Field("", alias="jsonpCallback")
+    map_center: Literal[
         "(0°, 0°)",
         "North America",
         "Europe",
@@ -3116,44 +2871,46 @@ class Worldmap(Panel):
         "SE Asia",
         "Last GeoHash",
         "custom",
-    ] = "(0°, 0°)"
-    mapCenterLatitude: int = 0
-    mapCenterLongitude: int = 0
+    ] = Field("(0°, 0°)", alias="mapCenter")
+    map_center_latitude: int = Field(0, alias="mapCenterLatitude")
+    map_center_longitude: int = Field(0, alias="mapCenterLongitude")
     metric: str = "Value"
-    mouseWheelZoom: bool = False
-    stickyLabels: bool = False
+    mouse_wheel_zoom: bool = Field(False, alias="mouseWheelZoom")
+    sticky_labels: bool = Field(False, alias="stickyLabels")
     thresholds: str = "0,100,150"
-    thresholdColors: list[str] = ["#73BF69", "#73BF69", "#FADE2A", "#C4162A"]
-    unitPlural: str = ""
-    unitSingle: str = ""
-    unitSingular: str = ""
+    threshold_colors: list[str] = Field(
+        ["#73BF69", "#73BF69", "#FADE2A", "#C4162A"], alias="thresholdColors"
+    )
+    unit_plural: str = Field("", alias="unitPlural")
+    unit_single: str = Field("", alias="unitSingle")
+    unit_singular: str = Field("", alias="unitSingular")
     aggregation: str = "total"
 
     def to_json_data(self) -> dict:
         return self.panel_json(
             {
-                "circleMaxSize": self.circleMaxSize,
-                "circleMinSize": self.circleMinSize,
-                "colors": self.thresholdColors,
+                "circleMaxSize": self.circle_max_size,
+                "circleMinSize": self.circle_min_size,
+                "colors": self.threshold_colors,
                 "decimals": self.decimals,
-                "esGeoPoint": self.geoPoint,
+                "esGeoPoint": self.geo_point,
                 "esMetric": self.metric,
-                "locationData": self.locationData,
-                "esLocationName": self.locationName,
-                "hideEmpty": self.hideEmpty,
-                "hideZero": self.hideZero,
-                "initialZoom": self.initialZoom,
-                "jsonUrl": self.jsonUrl,
-                "jsonpCallback": self.jsonpCallback,
-                "mapCenter": self.mapCenter,
-                "mapCenterLatitude": self.mapCenterLatitude,
-                "mapCenterLongitude": self.mapCenterLongitude,
-                "mouseWheelZoom": self.mouseWheelZoom,
-                "stickyLabels": self.stickyLabels,
+                "locationData": self.location_data,
+                "esLocationName": self.location_name,
+                "hideEmpty": self.hide_empty,
+                "hideZero": self.hide_zero,
+                "initialZoom": self.initial_zoom,
+                "jsonUrl": self.json_url,
+                "jsonpCallback": self.jsonp_callback,
+                "mapCenter": self.map_center,
+                "mapCenterLatitude": self.map_center_latitude,
+                "mapCenterLongitude": self.map_center_longitude,
+                "mouseWheelZoom": self.mouse_wheel_zoom,
+                "stickyLabels": self.sticky_labels,
                 "thresholds": self.thresholds,
-                "unitPlural": self.unitPlural,
-                "unitSingle": self.unitSingle,
-                "unitSingular": self.unitSingular,
+                "unitPlural": self.unit_plural,
+                "unitSingle": self.unit_single,
+                "unitSingular": self.unit_singular,
                 "valueName": self.aggregation,
                 "tableQueryOptions": {
                     "queryType": "geohash",
@@ -3168,18 +2925,18 @@ class Worldmap(Panel):
 
 
 class StateTimeline(Panel):
-    alignValue: str = "left"
-    colorMode: str = "thresholds"
-    fillOpacity: int = 70
-    legendDisplayMode: str = "list"
-    legendPlacement: str = "bottom"
-    lineWidth: int = 0
+    align_value: str = Field("left", alias="alignValue")
+    color_mode: str = Field("thresholds", alias="colorMode")
+    fill_opacity: int = Field(70, alias="fillOpacity")
+    legend_display_mode: str = Field("list", alias="legendDisplayMode")
+    legend_placement: str = Field("bottom", alias="legendPlacement")
+    line_width: int = Field(0, alias="lineWidth")
     mappings: list[Any] = []
     overrides: list[Any] = []
-    mergeValues: bool = True
-    rowHeight: float = 0.9
-    showValue: str = "auto"
-    tooltipMode: str = "single"
+    merge_values: bool = Field(True, alias="mergeValues")
+    row_height: float = Field(0.9, alias="rowHeight")
+    show_value: str = Field("auto", alias="showValue")
+    tooltip_mode: str = Field("single", alias="tooltipMode")
 
     def to_json_data(self) -> dict:
         return self.panel_json(
@@ -3187,24 +2944,24 @@ class StateTimeline(Panel):
                 "fieldConfig": {
                     "defaults": {
                         "custom": {
-                            "lineWidth": self.lineWidth,
-                            "fillOpacity": self.fillOpacity,
+                            "lineWidth": self.line_width,
+                            "fillOpacity": self.fill_opacity,
                         },
-                        "color": {"mode": self.colorMode},
+                        "color": {"mode": self.color_mode},
                         "mappings": self.mappings,
                     },
                     "overrides": self.overrides,
                 },
                 "options": {
-                    "mergeValues": self.mergeValues,
-                    "showValue": self.showValue,
-                    "alignValue": self.alignValue,
-                    "rowHeight": self.rowHeight,
+                    "mergeValues": self.merge_values,
+                    "showValue": self.show_value,
+                    "alignValue": self.align_value,
+                    "rowHeight": self.row_height,
                     "legend": {
-                        "displayMode": self.legendDisplayMode,
-                        "placement": self.legendPlacement,
+                        "displayMode": self.legend_display_mode,
+                        "placement": self.legend_placement,
                     },
-                    "tooltip": {"mode": self.tooltipMode},
+                    "tooltip": {"mode": self.tooltip_mode},
                 },
                 "type": STATE_TIMELINE_TYPE,
             },
@@ -3212,14 +2969,14 @@ class StateTimeline(Panel):
 
 
 class Histogram(Panel):
-    bucketOffset: int = 0
-    bucketSize: int = 0
-    colorMode: str = "thresholds"
+    bucket_offset: int = Field(0, alias="bucketOffset")
+    bucket_size: int = Field(0, alias="bucketSize")
+    color_mode: str = Field("thresholds", alias="colorMode")
     combine: bool = False
-    fillOpacity: int = 80
-    legendDisplayMode: str = "list"
-    legendPlacement: str = "bottom"
-    lineWidth: int = 0
+    fill_opacity: int = Field(80, alias="fillOpacity")
+    legend_display_mode: str = Field("list", alias="legendDisplayMode")
+    legend_placement: str = Field("bottom", alias="legendPlacement")
+    line_width: int = Field(0, alias="lineWidth")
     mappings: list[Any] = []
     overrides: list[Any] = []
 
@@ -3229,42 +2986,42 @@ class Histogram(Panel):
                 "fieldConfig": {
                     "defaults": {
                         "custom": {
-                            "lineWidth": self.lineWidth,
-                            "fillOpacity": self.fillOpacity,
+                            "lineWidth": self.line_width,
+                            "fillOpacity": self.fill_opacity,
                         },
-                        "color": {"mode": self.colorMode},
+                        "color": {"mode": self.color_mode},
                         "mappings": self.mappings,
                     },
                     "overrides": self.overrides,
                 },
                 "options": {
                     "legend": {
-                        "displayMode": self.legendDisplayMode,
-                        "placement": self.legendPlacement,
+                        "displayMode": self.legend_display_mode,
+                        "placement": self.legend_placement,
                     },
-                    "bucketOffset": self.bucketOffset,
+                    "bucketOffset": self.bucket_offset,
                     "combine": self.combine,
                 },
                 "type": HISTOGRAM_TYPE,
             },
         )
-        if self.bucketSize > 0:
-            histogram["options"]["bucketSize"] = self.bucketSize
+        if self.bucket_size > 0:
+            histogram["options"]["bucketSize"] = self.bucket_size
         return histogram
 
 
 class News(Panel):
-    feedUrl: str = ""
-    showImage: bool = True
-    useProxy: bool = False
+    feed_url: str = Field("", alias="feedUrl")
+    show_image: bool = Field(True, alias="showImage")
+    use_proxy: bool = Field(False, alias="useProxy")
 
     def to_json_data(self) -> dict:
         return self.panel_json(
             {
                 "options": {
-                    "feedUrl": self.feedUrl,
-                    "showImage": self.showImage,
-                    "useProxy": self.useProxy,
+                    "feedUrl": self.feed_url,
+                    "showImage": self.show_image,
+                    "useProxy": self.use_proxy,
                 },
                 "type": NEWS_TYPE,
             },
@@ -3276,12 +3033,12 @@ class Ae3ePlotly(Panel):
     data: list[Any] = []
     layout: dict[Any, Any] = {}
     script: str = """console.log(data)
-            var trace = {
-              x: data.series[0].fields[0].values.buffer,
-              y: data.series[0].fields[1].values.buffer
-            };
-            return {data:[trace],layout:{title:'My Chart'}};"""
-    clickScript: str = ""
+           var trace = {
+             x: data.series[0].fields[0].values.buffer,
+             y: data.series[0].fields[1].values.buffer
+           };
+           return {data:[trace],layout:{title:'My Chart'}};"""
+    click_script: str = Field("", alias="clickScript")
 
     def to_json_data(self) -> dict:
         plotly = self.panel_json(
@@ -3291,7 +3048,7 @@ class Ae3ePlotly(Panel):
                     "configuration": {},
                     "data": self.data,
                     "layout": {},
-                    "onclick": self.clickScript,
+                    "onclick": self.click_script,
                     "script": self.script,
                 },
                 "type": AE3E_PLOTLY_TYPE,
@@ -3304,38 +3061,38 @@ class Ae3ePlotly(Panel):
 
 class BarChart(Panel):
     orientation: str = "auto"
-    xTickLabelRotation: int = 0
-    xTickLabelSpacing: int = 0
-    showValue: str = "auto"
+    x_tick_label_rotation: int = Field(0, alias="xTickLabelRotation")
+    x_tick_label_spacing: int = Field(0, alias="xTickLabelSpacing")
+    show_value: str = Field("auto", alias="showValue")
     stacking: str = "none"
-    groupWidth: float = 0.7
-    barWidth: float = 0.97
-    barRadius: float = 0.0
-    tooltipMode: str = "single"
-    tooltipSort: str = "none"
-    showLegend: bool = True
-    legendDisplayMode: str = "list"
-    legendPlacement: str = "bottom"
-    legendCalcs: list[Any] = []
-    lineWidth: int = 1
-    fillOpacity: int = 80
-    gradientMode: str = "none"
-    axisPlacement: str = "auto"
-    axisLabel: str = ""
-    axisColorMode: str = "text"
-    scaleDistributionType: str = "linear"
-    axisCenteredZero: bool = False
-    hideFromTooltip: bool = False
-    hideFromViz: bool = False
-    hideFromLegend: bool = False
-    colorMode: str = "palette-classic"
-    fixedColor: str = "blue"
+    group_width: float = Field(0.7, alias="groupWidth")
+    bar_width: float = Field(0.97, alias="barWidth")
+    bar_radius: float = Field(0.0, alias="barRadius")
+    tooltip_mode: str = Field("single", alias="tooltipMode")
+    tooltip_sort: str = Field("none", alias="tooltipSort")
+    show_legend: bool = Field(True, alias="showLegend")
+    legend_display_mode: str = Field("list", alias="legendDisplayMode")
+    legend_placement: str = Field("bottom", alias="legendPlacement")
+    legend_calcs: list[Any] = Field([], alias="legendCalcs")
+    line_width: int = Field(1, alias="lineWidth")
+    fill_opacity: int = Field(80, alias="fillOpacity")
+    gradient_mode: str = Field("none", alias="gradientMode")
+    axis_placement: str = Field("auto", alias="axisPlacement")
+    axis_label: str = Field("", alias="axisLabel")
+    axis_color_mode: str = Field("text", alias="axisColorMode")
+    scale_distribution_type: str = Field("linear", alias="scaleDistributionType")
+    axis_centered_zero: bool = Field(False, alias="axisCenteredZero")
+    hide_from_tooltip: bool = Field(False, alias="hideFromTooltip")
+    hide_from_viz: bool = Field(False, alias="hideFromViz")
+    hide_from_legend: bool = Field(False, alias="hideFromLegend")
+    color_mode: str = Field("palette-classic", alias="colorMode")
+    fixed_color: str = Field("blue", alias="fixedColor")
     mappings: list[Any] = []
-    thresholdsMode: str = "absolute"
-    thresholdSteps: list[Any] = [
-        {"value": None, "color": "green"},
-        {"value": 80, "color": "red"},
-    ]
+    thresholds_mode: str = Field("absolute", alias="thresholdsMode")
+    threshold_steps: list[Any] = Field(
+        [{"value": None, "color": "green"}, {"value": 80, "color": "red"}],
+        alias="thresholdSteps",
+    )
     overrides: list[Any] = []
 
     def to_json_data(self) -> dict:
@@ -3343,48 +3100,48 @@ class BarChart(Panel):
             {
                 "options": {
                     "orientation": self.orientation,
-                    "xTickLabelRotation": self.xTickLabelRotation,
-                    "xTickLabelSpacing": self.xTickLabelSpacing,
-                    "showValue": self.showValue,
+                    "xTickLabelRotation": self.x_tick_label_rotation,
+                    "xTickLabelSpacing": self.x_tick_label_spacing,
+                    "showValue": self.show_value,
                     "stacking": self.stacking,
-                    "groupWidth": self.groupWidth,
-                    "barWidth": self.barWidth,
-                    "barRadius": self.barRadius,
-                    "tooltip": {"mode": self.tooltipMode, "sort": self.tooltipSort},
+                    "groupWidth": self.group_width,
+                    "barWidth": self.bar_width,
+                    "barRadius": self.bar_radius,
+                    "tooltip": {"mode": self.tooltip_mode, "sort": self.tooltip_sort},
                     "legend": {
-                        "showLegend": self.showLegend,
-                        "displayMode": self.legendDisplayMode,
-                        "placement": self.legendPlacement,
-                        "calcs": self.legendCalcs,
+                        "show": self.show_legend,
+                        "displayMode": self.legend_display_mode,
+                        "placement": self.legend_placement,
+                        "calcs": self.legend_calcs,
                     },
                 },
                 "fieldConfig": {
                     "defaults": {
                         "custom": {
-                            "lineWidth": self.lineWidth,
-                            "fillOpacity": self.fillOpacity,
-                            "gradientMode": self.gradientMode,
-                            "axisPlacement": self.axisPlacement,
-                            "axisLabel": self.axisLabel,
-                            "axisColorMode": self.axisColorMode,
-                            "scaleDistribution": {"type": self.scaleDistributionType},
-                            "axisCenteredZero": self.axisCenteredZero,
+                            "lineWidth": self.line_width,
+                            "fillOpacity": self.fill_opacity,
+                            "gradientMode": self.gradient_mode,
+                            "axisPlacement": self.axis_placement,
+                            "axisLabel": self.axis_label,
+                            "axisColorMode": self.axis_color_mode,
+                            "scaleDistribution": {"type": self.scale_distribution_type},
+                            "axisCenteredZero": self.axis_centered_zero,
                             "hideFrom": {
-                                "tooltip": self.hideFromTooltip,
-                                "viz": self.hideFromViz,
-                                "legend": self.hideFromLegend,
+                                "tooltip": self.hide_from_tooltip,
+                                "viz": self.hide_from_viz,
+                                "legend": self.hide_from_legend,
                             },
                         },
                         "color": {
-                            "mode": self.colorMode,
-                            "fixedColor": self.fixedColor
-                            if self.colorMode == "fixed"
+                            "mode": self.color_mode,
+                            "fixedColor": self.fixed_color
+                            if self.color_mode == "fixed"
                             else "none",
                         },
                         "mappings": self.mappings,
                         "thresholds": {
-                            "mode": self.thresholdsMode,
-                            "steps": self.thresholdSteps,
+                            "mode": self.thresholds_mode,
+                            "steps": self.threshold_steps,
                         },
                     },
                     "overrides": self.overrides,
